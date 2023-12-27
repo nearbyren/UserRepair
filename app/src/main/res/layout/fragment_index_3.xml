@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_bg_color"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_28">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dp_19">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/school_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:gravity="center"
+                    android:text="@string/school_name"
+                    android:textColor="@color/info_22222"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/school_name_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_42"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_23"
+                    android:background="@drawable/edit_bg_layer_list"
+                    android:gravity="center_horizontal|left"
+                    android:hint=""
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/school_name" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="@dimen/dp_85"
+                    app:layout_constraintTop_toBottomOf="@id/school_name_et" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text="@string/name"
+                    android:textColor="@color/info_22222"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline01" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/name_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_42"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_23"
+
+                    android:background="@drawable/edit_bg_layer_list"
+                    android:gravity="center_horizontal|left"
+                    android:hint=""
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="@dimen/dp_175"
+                    app:layout_constraintTop_toBottomOf="@id/name_et" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/telephone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text="@string/telephone"
+                    android:textColor="@color/info_22222"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline02" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/telephone_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_42"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_23"
+                    android:background="@drawable/edit_bg_layer_list"
+                    android:gravity="center_horizontal|left"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:inputType="phone"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/telephone" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="@dimen/dp_270"
+                    app:layout_constraintTop_toBottomOf="@id/telephone_et" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/query_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text="@string/query_content"
+                    android:textColor="@color/info_22222"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline03" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/query_content_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_127"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_23"
+                    android:background="@drawable/edit_bg_layer_list"
+                    android:gravity="left|center|top"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/query_content" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_48"
+                    android:layout_marginTop="@dimen/dp_28"
+                    android:layout_marginRight="@dimen/dp_48"
+                    android:background="@drawable/shape_button_submit"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintTop_toBottomOf="@+id/query_content_et" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/call_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_38"
+                    android:layout_marginLeft="@dimen/dp_48"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/dp_19"
+                    android:layout_marginRight="@dimen/dp_48"
+                    android:drawableLeft="@drawable/telephone"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:text="2888 - 6688"
+                    android:textColor="#2E7DE0"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

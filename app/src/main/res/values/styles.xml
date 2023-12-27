@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground"> @color/transparent </item>
+       <!-- <item name="android:windowAnimationStyle">@style/Animation</item>-->
+    </style>
+    <style name="Animation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+    <!--选中的样式，可以设置选择的字体颜色，这里只是为了改变选择时的字体大小-->
+    <style name="bottom_tab_title_active">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--没有选中的样式，导航默认的字体大小就是12sp-->
+    <style name="bottom_tab_title_inactive">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!--菜單圖標字體間距-->
+    <style name="bottom_navigation_view_text" parent="@android:style/TextAppearance.Small">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!--菜單紅點提示-->
+    <style name="Badge">
+        <item name="android:layout_width">@dimen/dp_5</item>
+        <item name="android:layout_height">@dimen/dp_5</item>
+        <item name="android:background">@drawable/menu_bq_bg_circle</item>
+        <item name="android:backgroundTint">#FF0000</item>
+        <item name="android:backgroundTintMode">screen</item>
+    </style>
+
+    <!--啟動頁-->
+    <style name="launcher_theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launcher_bg</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>

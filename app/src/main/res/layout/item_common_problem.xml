@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/index_index_bg_white"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_16">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/common_problem_text_left_1"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="@dimen/dp_17"
+            android:background="@drawable/shape_problem_blue"
+            android:gravity="center"
+            android:text="Q"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/dp_35"
+            android:layout_height="@dimen/dp_35"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/common_problem_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:src="@drawable/icon_up"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/common_problem_text_right_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:text="这是一个常见问题的问题描述?"
+            android:textColor="@color/info_22222"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toRightOf="@+id/common_problem_text_left_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/dp_20" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/common_problem_text_left_2"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="@dimen/dp_17"
+            android:background="@drawable/shape_problem_grey"
+            android:gravity="center"
+            android:text="A"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/common_problem_text_right_2"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:layout_marginRight="@dimen/dp_12"
+            android:text="这是一个常见问题的回答，一般情况下两行如果可以展示出来的话就展示两行。?两行。?两行。?两行。?两行。?两行。?两行。?两行。?"
+            android:textColor="#919191"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@+id/common_problem_text_left_2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            app:layout_goneMarginBottom="@dimen/dp_16"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/at_16"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_16"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/common_problem_text_right_2"
+            tools:visibility="visible" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

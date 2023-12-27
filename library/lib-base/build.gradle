@@ -1,0 +1,107 @@
+import composing.builds.*
+plugins {
+    id 'com.android.library'
+    id 'composing.builds'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'kotlin-parcelize'
+    id 'maven-publish'
+}
+//kotlin 组件module 配置
+kapt {
+    arguments {
+        //根据模块名来命名路由根节点
+        arg("AROUTER_MODULE_NAME", project.getName())
+        //生成Json文件
+        //arg("AROUTER_GENERATE_DOC", "enable")，kotlin中使用最新版本不要这句话，否则会报错，具体错误信息请看本博客中kotlin依赖最新ARouter的坑
+    }
+}
+android {
+    namespace "nearby.lib.base"
+    compileSdk BuildConfig.compileSdk //编译的sdk
+
+    defaultConfig {
+        minSdk BuildConfig.minSdk //最低支持版本
+        targetSdk BuildConfig.targetSdk //支持的目标版本
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    testImplementation Testing.jUnit
+    androidTestImplementation Testing.androidJunit
+    androidTestImplementation Testing.espresso
+
+
+
+    api AndroidX.databindingRuntime
+    api Google.material
+    api Google.gson
+//    api Google.flexbox
+
+    api AndroidX.multidex
+    api AndroidX.coreKtx
+    api AndroidX.appcompat
+
+
+    api AndroidX.recyclerView
+    api AndroidX.cardview
+    api AndroidX.exifinterface
+
+    api AndroidX.Lifecycle.lifecycleRuntimeKtx
+    api AndroidX.Lifecycle.liveDataKtx
+    api AndroidX.Lifecycle.viewModelKtx
+    api AndroidX.Lifecycle.lcyExt
+
+
+    api Lib.retrofit
+    api Lib.converterCalars
+    api Lib.retrofitConverterGson
+    api Lib.adapterRxjava
+    api Lib.adapterRxjava2
+    api Lib.okhttp3
+    api Lib.conscryptAndroid
+
+
+    api Lib.rxandroid
+    api Lib.rxbinding2
+
+
+    api Lib.glide
+    api Lib.glideCompiler
+    api Lib.fastjson
+//    api Lib.Immersionbar.immersionbar
+    api 'com.gyf.immersionbar:immersionbar:3.0.0'
+
+    api Lib.lottie
+
+    api AndroidX.Navigation.kotCorAnd
+    api AndroidX.Navigation.kotCorCor
+    api AndroidX.Navigation.kotlinStdlib
+
+    implementation Lib.arouterApi
+    kapt Lib.arouterCompiler
+    implementation project(path: ':library:lib-router')
+    api project(path: ':library:lib-uikit')
+}

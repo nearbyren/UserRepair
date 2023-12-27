@@ -1,0 +1,72 @@
+import composing.builds.*
+plugins {
+    id 'com.android.library'
+    id 'composing.builds'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'kotlin-parcelize'
+    id 'maven-publish'
+}
+android {
+
+    compileSdk BuildConfig.compileSdk //编译的sdk
+    namespace "nearby.lib.uikit"
+    defaultConfig {
+        minSdk BuildConfig.minSdk //最低支持版本
+        targetSdk BuildConfig.targetSdk //支持的目标版本
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    testImplementation Testing.jUnit
+    androidTestImplementation Testing.androidJunit
+    androidTestImplementation Testing.espresso
+
+
+
+
+
+    implementation AndroidX.multidex
+    implementation AndroidX.coreKtx
+    implementation AndroidX.appcompat
+
+    implementation AndroidX.Constraintlayout.constraintLayout
+    implementation AndroidX.recyclerView
+    implementation AndroidX.cardview
+    implementation AndroidX.exifinterface
+
+    implementation AndroidX.Lifecycle.lifecycleRuntimeKtx
+    implementation AndroidX.Lifecycle.liveDataKtx
+    implementation AndroidX.Lifecycle.viewModelKtx
+    implementation AndroidX.Lifecycle.lcyExt
+
+    implementation Lib.sketch
+    implementation Lib.sketchGif
+    implementation Lib.glide
+    implementation Lib.glideCompiler
+    implementation Lib.fastjson
+
+
+}

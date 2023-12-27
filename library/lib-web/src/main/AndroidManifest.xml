@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="nearby.lib.web">
+    <!-- WIFI网络状态信息权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <application>
+        <activity
+            android:name=".ui.WebStaticActivity"
+            android:exported="true"
+            android:label="login"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.App"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+    </application>
+</manifest>

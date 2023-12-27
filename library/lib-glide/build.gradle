@@ -1,0 +1,51 @@
+import composing.builds.*
+plugins {
+    id 'com.android.library'
+    id 'composing.builds'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'kotlin-parcelize'
+    id 'maven-publish'
+}
+android {
+
+    compileSdk BuildConfig.compileSdk //编译的sdk
+    namespace "nearby.lib.glide"
+    defaultConfig {
+        minSdk BuildConfig.minSdk //最低支持版本
+        targetSdk BuildConfig.targetSdk //支持的目标版本
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+
+    implementation project(path: ':library:lib-base')
+    implementation project(path: ':library:lib-netwrok')
+
+    //glide框架導入
+    api "com.github.bumptech.glide:glide:4.12.0"
+    kapt "com.github.bumptech.glide:compiler:4.12.0"
+    //https图片处理
+    api "com.github.bumptech.glide:okhttp3-integration:4.11.0"
+
+
+}

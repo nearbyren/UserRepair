@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/toolsbuilds" name="toolsbuilds">
+                <projects>
+                  <project path="$PROJECT_DIR$/toolsbuilds" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="jbr-17" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/library" />
+            <option value="$PROJECT_DIR$/library/lib-base" />
+            <option value="$PROJECT_DIR$/library/lib-common" />
+            <option value="$PROJECT_DIR$/library/lib-glide" />
+            <option value="$PROJECT_DIR$/library/lib-mvvm" />
+            <option value="$PROJECT_DIR$/library/lib-netwrok" />
+            <option value="$PROJECT_DIR$/library/lib-room" />
+            <option value="$PROJECT_DIR$/library/lib-router" />
+            <option value="$PROJECT_DIR$/library/lib-signal" />
+            <option value="$PROJECT_DIR$/library/lib-uikit" />
+            <option value="$PROJECT_DIR$/library/lib-web" />
+            <option value="$PROJECT_DIR$/toolsbuilds" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

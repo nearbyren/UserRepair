@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Item selected state -->
+    <item android:color="@color/menu_text_color_select" android:state_checked="true" />
+
+    <!-- Default state -->
+    <item android:color="@color/menu_text_color_unselect" />
+</selector>

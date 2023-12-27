@@ -1,0 +1,232 @@
+import composing.builds.*
+
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'com.tencent.vasdolly'//VasDolly打包插件
+    id 'composing.builds'
+    id 'com.tencent.android.tpns'
+
+}
+android {
+
+    compileSdk BuildConfig.compileSdk //编译的sdk
+    namespace "apps.user.repair"
+    defaultConfig {
+        applicationId "apps.user.repair"
+        minSdk BuildConfig.minSdk //最低支持版本
+        targetSdk BuildConfig.targetSdk //支持的目标版本
+        versionCode BuildConfig.versionCode
+        versionName BuildConfig.versionName
+        resConfigs "zh"   //如果应用没有做国际化，可以让应用仅支持 中文的资源配置
+        multiDexEnabled true//dex分包支持
+        ndk {
+            //可以根据需要来自行选择并添加对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            //还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+
+                XG_ACCESS_ID : "1530004122",
+                XG_ACCESS_KEY: "AYO3NNU6UT9R",]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"//测试脚本
+    }
+
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'src/main/AndroidManifest.xml' //AndroidManifest路径
+//            jniLibs.srcDirs = ['libs']//so库路径
+//            resources.srcDirs = ['src']//全部资源文件路径
+//            aidl.srcDirs = ['src']//aidl文件路径
+//            renderscript.srcDirs = ['src']//renderscript文件路径
+//            res.srcDirs = ['res']//res资源文件路径
+//            assets.srcDirs = ['assets']//asset资源文件路径
+//
+//        }
+//    }
+
+    signingConfigs {
+        release {
+            try {
+                storeFile file("./web.jks")
+                storePassword "web123"
+                keyAlias "web"
+                keyPassword "web123"
+                v1SigningEnabled true//v1版本签名
+                v2SigningEnabled true//v2版本签名
+            } catch (ex) {
+                throw new Exception(ex.toString())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+        debug {
+            shrinkResources false
+            signingConfig signingConfigs.release
+            debuggable true
+        }
+    }
+
+    packagingOptions { exclude 'META-INF/rxjava.properties' }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+        aaptOptions.cruncherEnabled = false
+        aaptOptions.useNewCruncher = false
+    }
+
+    buildFeatures {
+        dataBinding true
+        //Requires setting the buildFeatures.aidl to true in the build file
+        aidl true
+//        compose true
+        // Disable unused AGP features
+        buildConfig true
+//        renderScript false
+//        resValues false
+//        shaders false
+
+    }
+    lintOptions {
+        // true--关闭lint报告的分析进度
+        quiet true
+        // true--错误发生后停止gradle构建
+        abortOnError false
+        // true--只报告error
+        ignoreWarnings true
+        // true--忽略有错误的文件的全/绝对路径(默认是true)
+        //absolutePaths true
+        // true--检查所有问题点，包含其他默认关闭项
+        checkAllWarnings true
+        // true--所有warning当做error
+        warningsAsErrors true
+        // 关闭指定问题检查
+        disable 'TypographyFractions', 'TypographyQuotes'
+        // 打开指定问题检查
+        enable 'RtlHardcoded', 'RtlCompat', 'RtlEnabled'
+        // 仅检查指定问题
+        check 'NewApi', 'InlinedApi'
+        // true--error输出文件不包含源码行号
+        noLines true
+        // true--显示错误的所有发生位置，不截取
+        showAll true
+        // 回退lint设置(默认规则)
+        lintConfig file("default-lint.xml")
+        // true--生成txt格式报告(默认false)
+        textReport true
+        // 重定向输出；可以是文件或'stdout'
+        textOutput 'stdout'
+        // true--生成XML格式报告
+        xmlReport false
+        // 指定xml报告文档(默认lint-results.xml)
+        xmlOutput file("lint-report.xml")
+        // true--生成HTML报告(带问题解释，源码位置，等)
+        htmlReport true
+        // html报告可选路径(构建器默认是lint-results.html )
+        htmlOutput file("lint-report.html")
+        //  true--所有正式版构建执行规则生成崩溃的lint检查，如果有崩溃问题将停止构建
+        checkReleaseBuilds true
+        // 在发布版本编译时检查(即使不包含**重点内容**lint目标)，指定问题的规则生成崩溃
+        fatal 'NewApi', 'InlineApi'
+        // 指定问题的规则生成错误
+        error 'Wakelock', 'TextViewEdits'
+        // 指定问题的规则生成警告
+        warning 'ResourceAsColor'
+        // 忽略指定问题的规则(同关闭检查)
+        ignore 'TypographyQuotes'
+    }
+}
+
+
+//gradle强制刷新依赖build.gradle增加配置
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+//Version Code的前缀。年月日，例如20181203。
+static def getVersionCodePrefix() {
+    def date = new Date()
+    def versionCode = date.format('MMddHHmmss')
+    return versionCode
+}
+
+
+android.applicationVariants.all { variant ->
+    variant.outputs.all {
+        //在这里修改apk文件名 月日时分 版本${variant.productFlavors[0].name}${variant.versionName}
+        outputFileName = "User${getVersionCodePrefix()}.apk"
+    }
+}
+//gradle强制刷新依赖build.gradle增加配置
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+//根据已有的基准包生成多渠道包
+rebuildChannel {
+//    enviApkName=0819163406.0.3.apk
+//    enviApk=test
+//    channelApk=testApk
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def enviApk = properties.getProperty('enviApk')
+    def enviApkName = properties.getProperty('enviApkName')
+    def channelApk = properties.getProperty('channelApk')
+    println("启动多渠道开启 enviApk = $enviApk - enviApkName = $enviApkName - channelApk $channelApk ")
+    //指定渠道文件
+    channelFile = file("channel.txt")
+    /**
+     * 基础包的路径 baseReleaseApk
+     * 渠道包输出目录 releaseOutputDir*/
+    baseApk = file("./${enviApk}/release/${enviApkName}")
+    //渠道包输出目录
+    outputDir = file("${channelApk}")
+    //快速模式：生成渠道包时不进行校验（速度可以提升10倍以上，默认为false）
+    fastMode = false
+    //低内存模式（仅针对V2签名，默认为false）：只把签名块、中央目录和EOCD读取到内存，不把最大头的内容块读取到内存，在手机上合成APK时，可以使用该模式
+    lowMemory = false
+}
+dependencies {
+    testImplementation Testing.jUnit
+    androidTestImplementation Testing.androidJunit
+    androidTestImplementation Testing.espresso
+    implementation files('libs\\crasheye-2.3.7.jar')
+    api project(path: ':library:lib-mvvm')
+    api project(path: ':library:lib-netwrok')
+    api project(path: ':library:lib-base')
+    api project(path: ':library:lib-router')
+    api project(path: ':library:lib-signal')
+    api Lib.smarttablayout
+    api Lib.smarttablayoutUtils
+    api AndroidX.constraintlayout.constraintLayout
+    api 'me.jessyan:autosize:1.2.1'
+    api Lib.youth
+    api "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    //知乎相冊
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+    implementation 'com.ooimi:toastx:1.1.3'
+
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.1.0'      //核心必须依赖
+    implementation 'io.github.scwang90:refresh-header-classics:2.1.0'    //经典刷新头
+    implementation 'io.github.scwang90:refresh-footer-classics:2.1.0'    //经典加载
+    implementation 'io.github.scwang90:refresh-footer-ball:2.1.0'        //球脉冲加载
+
+    //腾讯云推送
+    implementation 'com.tencent.tpns:tpns:1.4.3.4-release'
+
+}

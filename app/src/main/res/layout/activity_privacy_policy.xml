@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_bg_color"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/privacy_policy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@string/user_privacy_policy"
+            android:textColor="@color/info_292F3A"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_ll_root" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/privacy_policy_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@string/user_privacy_policy2"
+            android:textColor="@color/info_666666"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacy_policy_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@string/user_privacy_policy3"
+            android:textColor="@color/info_666666"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacy_policy_content" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

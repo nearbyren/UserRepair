@@ -1,0 +1,14 @@
+{
+    "tpns": {
+        "access_id": "1530004122",
+        "access_key": "AYO3NNU6UT9R"
+    },
+    "apps.user.repair": {
+        "channel": {
+            "enable": true
+        }
+    },
+    "debug": false,
+    "version": "1.4.3.4-release",
+    "upgrade": true
+}

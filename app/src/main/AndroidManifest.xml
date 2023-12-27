@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="apps.user.repair">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Android8.0以上需要申请安装未知来源应用的权限-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!--
+        在 Android 9.0 中，应用在使用前台服务之前必须先申请 FOREGROUND_SERVICE 权限，否则就会抛出 SecurityException 异常。
+    -->
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+
+    <!--
+        如需兼容 Android P，需要添加使用 Apache HTTP client 库，在 AndroidManifest 的 application 节点内添加以下配置即可。
+    -->
+
+
+    <!--
+       Android 9.0 (Pie) 适配
+      android:networkSecurityConfig="@xml/network_security_config"
+    -->
+    <application
+        android:name="apps.user.repair.RepairApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="UserRepair"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:name">
+        <!--Android FileProvider 7.0及以上版本APP覆盖安装适配-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+        <!--
+                由于官方在 Android 9.0 中移除了所有 Apache HTTP Client 相关的类，因此我们的应用或是一些第三方库如果使用了这些类，就会抛出找不到类的异常：
+        -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <!--推送服務-->
+        <receiver
+            android:name="apps.user.repair.service.MessageXGPushBaseReceiver"
+            android:exported="false">
+            <intent-filter>
+                <!-- 接收消息透传 -->
+                <action android:name="com.tencent.android.xg.vip.action.PUSH_MESSAGE" />
+                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
+                <action android:name="com.tencent.android.xg.vip.action.FEEDBACK" />
+            </intent-filter>
+        </receiver>
+        <!--推送服務-->
+        <meta-data
+            android:name="XG_SERVER_SUFFIX"
+            android:value="tpns.hk.tencent.com" />
+
+        <!--ui適配-->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+
+        <!--啟動頁-->
+        <activity
+            android:name="apps.user.repair.ui.LauncherActivity"
+            android:exported="true"
+            android:theme="@style/launcher_theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--主頁-->
+        <activity
+            android:name="apps.user.repair.ui.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme">
+
+        </activity>
+
+        <!--登錄註冊-->
+        <activity
+            android:name="apps.user.repair.ui.SignInLoginActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme"></activity>
+
+        <!--登錄註冊頁選項-->
+        <activity
+            android:name="apps.user.repair.ui.ActivateActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme"></activity>
+
+        <!--上傳校園卡-->
+        <activity
+            android:name="apps.user.repair.ui.SubmitCardActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+
+        <!--更改郵件-->
+        <activity
+            android:name="apps.user.repair.ui.info.EditEmailActivity"
+            android:exported="true" />
+
+        <!--更改密碼-->
+        <activity
+            android:name="apps.user.repair.ui.info.EditPasswordActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+
+        <!--常見問題-->
+        <activity
+            android:name="apps.user.repair.ui.info.CommonProblemActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+
+        <!--關於我們-->
+        <activity
+            android:name="apps.user.repair.ui.info.AboutUsActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+
+        <!--条款及细节-->
+        <activity
+            android:name="apps.user.repair.ui.info.RermsDetailsActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <!--私隱政策-->
+
+        <activity
+            android:name="apps.user.repair.ui.info.PrivacyPolicyActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+    </application>
+
+</manifest>

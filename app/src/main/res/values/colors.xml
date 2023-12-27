@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="theme_bg_color">#F5F5F5</color>
+    <!--菜单字体-->
+    <color name="menu_text_color_select">#2E7DE0</color>
+    <color name="menu_text_color_unselect">#606060</color>
+    <color name="toolbar_bg_color">#2E7DE0</color>
+    <!--個人資料-->
+    <color name="info_292F3A">#292F3A</color>
+    <color name="info_22222">#222222</color>
+    <color name="info_666666">#666666</color>
+    <!--維修單狀態-->
+    <color name="item_status_1">#FFA800</color>
+    <color name="item_status_2">#2E7DE0</color>
+    <color name="item_status_3">#1DEF4B</color>
+    <color name="item_status_4">#999999</color>
+    <color name="item_status_5">@color/red</color>
+
+    <color name="holo_light_button_pressed">#66666666</color>
+    <color name="holo_light_button_normal">#b3cccccc</color>
+</resources>

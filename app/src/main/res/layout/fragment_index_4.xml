@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_bg_color"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp_24">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dp_19"
+                android:paddingBottom="@dimen/dp_20">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/material"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:gravity="center"
+                    android:text="@string/info_00"
+                    android:textColor="@color/info_22222"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/top1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginRight="@dimen/dp_24"
+                    android:background="@drawable/edit_bg_layer_list"
+                    app:layout_constraintTop_toBottomOf="@id/material">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_school_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/school_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_01"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintBottom_toTopOf="@+id/school_name_guideline"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/school_name_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/school_name_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="石圍角天主教小學"
+                            android:textColor="@color/info_666666"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/school_name_guideline" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <View
+                        android:id="@+id/line1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_school_name" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_email_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58"
+                        app:layout_constraintTop_toBottomOf="@+id/line1">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/email_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_02"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintBottom_toTopOf="@+id/cl_email_address_guideline"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/email_verified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_8"
+                            android:drawableLeft="@drawable/choose_v"
+                            android:drawablePadding="@dimen/dp_3"
+                            android:gravity="center"
+                            android:text="已驗證"
+                            android:textColor="#55A65A"
+                            android:textSize="@dimen/sp_16"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toTopOf="@+id/cl_email_address_guideline"
+                            app:layout_constraintLeft_toRightOf="@+id/email_address"
+                            tools:visibility="visible" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/cl_email_address_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.5" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/email_address_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="ABCD123@APPLE.COM"
+                            android:textColor="@color/info_666666"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cl_email_address_guideline" />
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/email_address_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="email_address_content,email_address_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain"
+                            tools:layout_editor_absoluteX="0dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <View
+                        android:id="@+id/line2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_email_address" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_change_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58"
+                        app:layout_constraintTop_toBottomOf="@+id/line2">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/change_password"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_03"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/change_password_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="change_password,change_password_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/line3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_change_password" />
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="@dimen/dp_220" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_25"
+                    android:text="@string/info_10"
+                    android:textColor="@color/info_22222"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginRight="@dimen/dp_24"
+                    android:background="@drawable/edit_bg_layer_list"
+                    app:layout_constraintTop_toBottomOf="@id/information">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_common_problem"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/common_problem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_11"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/common_problem_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="common_problem,common_problem_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/information_01"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_common_problem" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_contact_us"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58"
+                        app:layout_constraintTop_toBottomOf="@+id/information_01">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/contact_us"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_12"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/contact_us_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="contact_us,contact_us_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/information_02"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_contact_us" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_about_us"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58"
+                        app:layout_constraintTop_toBottomOf="@+id/information_02">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/about_us"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_13"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/about_us_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="about_us,about_us_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/information_03"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_about_us" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_terms_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58"
+                        app:layout_constraintTop_toBottomOf="@+id/information_03">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/terms_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_14"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/terms_details_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="terms_details,terms_details_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/information_04"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="#CAEEEEEE"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_terms_details" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_privacy_policy"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_58"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_terms_details">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/privacy_policy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_24"
+                            android:gravity="center"
+                            android:text="@string/info_14"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/privacy_policy_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:src="@drawable/icon_next"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:constraint_referenced_ids="privacy_policy,privacy_policy_icon"
+                            app:flow_verticalAlign="center"
+                            app:flow_wrapMode="chain"
+                            tools:layout_editor_absoluteX="0dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_sign_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_58"
+                    android:layout_marginLeft="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_26"
+                    android:layout_marginRight="@dimen/dp_24"
+                    android:background="@drawable/edit_bg_layer_list"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_information"
+
+                    >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/sign_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:gravity="center"
+                        android:text="@string/info_16"
+                        android:textColor="@color/info_22222"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/sign_out_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dp_24"
+                        android:src="@drawable/icon_next"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        app:constraint_referenced_ids="sign_out,sign_out_icon"
+                        app:flow_verticalAlign="center"
+                        app:flow_wrapMode="chain" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

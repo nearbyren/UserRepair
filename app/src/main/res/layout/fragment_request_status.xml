@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_48"
+            android:background="@drawable/index_index_bg_white_main">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_24"
+                android:src="@drawable/icon_blue_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="維修請求"
+                android:textColor="@color/info_22222"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/theme_bg_color"
+                android:paddingBottom="@dimen/dp_20">
+
+                <!--報價中-->
+                <include
+                    android:id="@+id/top"
+                    layout="@layout/fragment_request_status_item" />
+
+                <!--已報價已確認-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/status23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/top">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/baojiadan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:text="報價單"
+                        android:textColor="@color/info_22222"
+                        android:textSize="@dimen/sp_16"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/top" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_baojiaimg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_20"
+                        android:background="@drawable/index_index_bg_white2"
+                        android:padding="@dimen/dp_8"
+                        app:layout_constraintTop_toBottomOf="@+id/baojiadan">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/baojiaimg"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_240"
+                            android:layout_marginLeft="@dimen/dp_25"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginEnd="@dimen/dp_25"
+                            android:paddingTop="@dimen/dp_10"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+
+                            tools:background="@drawable/baojia" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/dow_quote"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_38"
+                        android:layout_marginLeft="@dimen/dp_28"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_28"
+                        android:layout_marginBottom="@dimen/dp_20"
+                        android:background="@drawable/shape_button_submit"
+                        android:text="下載報價"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintLeft_toRightOf="@id/guideline"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_baojiaimg" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_38"
+                        android:layout_marginLeft="@dimen/dp_28"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_28"
+                        android:layout_marginBottom="@dimen/dp_20"
+                        android:background="@drawable/shape_button_submit"
+                        android:text="確認"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintLeft_toRightOf="@id/guideline"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dow_quote" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--已完成-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_20"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/top">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_fapiao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/index_index_bg_white2"
+                        android:padding="@dimen/dp_8"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/fapiao_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:text="發票"
+                            android:textColor="@color/info_22222"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/info" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/fapiao"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_240"
+                            android:layout_marginLeft="@dimen/dp_25"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginEnd="@dimen/dp_25"
+                            android:paddingTop="@dimen/dp_10"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/fapiao_text"
+                            tools:background="@drawable/fapiao" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginBottom="@dimen/dp_20"
+                        android:background="@drawable/edit_bg_layer_list"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_fapiao">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_12"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginRight="@dimen/dp_12"
+                            android:layout_marginBottom="@dimen/dp_10"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
+</layout>

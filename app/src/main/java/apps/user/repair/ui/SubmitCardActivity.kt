@@ -54,8 +54,8 @@ class SubmitCardActivity : BaseAppBindActivity<ActivitySubmitCardBinding>() {
         if (ConstantUtil.ALBUM_REQUEST_CODE == requestCode && resultCode == RESULT_OK) {
             data?.let {
                 val photoPath = Matisse.obtainPathResult(it)[0]
-                photoPath?.let {
-                    val f = File(it)
+                photoPath?.let {photoPath->
+                    val f = File(photoPath)
                     Glide.with(this).load(f).into(binding.cardImg)
                     binding.cardBg.isVisible = false
                 }

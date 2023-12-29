@@ -5,19 +5,33 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--無標題欄-->
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground"> @color/transparent </item>
-       <!-- <item name="android:windowAnimationStyle">@style/Animation</item>-->
+        <!--背景透明-->
+        <item name="android:windowBackground">@color/transparent</item>
+        <!--是否有透明屬性
+      <item name="android:windowIsTranslucent">true</item>-->
+        <!--背景是否半透明
+        <item name="android:backgroundDimEnabled">false</item>-->
+        <!--狀態透明欄
+        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <!--activity 窗口切換效果
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>-->
+
     </style>
     <style name="Animation">
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
         <item name="android:activityCloseEnterAnimation">@null</item>
         <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:windowTranslucentStatus">false</item>
+
+
         <item name="android:taskOpenEnterAnimation">@null</item>
         <item name="android:taskOpenExitAnimation">@null</item>
         <item name="android:taskCloseEnterAnimation">@null</item>
         <item name="android:taskCloseExitAnimation">@null</item>
+
         <item name="android:taskToFrontEnterAnimation">@null</item>
         <item name="android:taskToFrontExitAnimation">@null</item>
         <item name="android:taskToBackEnterAnimation">@null</item>

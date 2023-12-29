@@ -145,7 +145,10 @@ data class ToolBarHelperUtil(
             toolbarId.setNavigationOnClickListener {
                 barHelperConfig!!.onBackListener?.let {
                     it.onBackClick()
-                } ?: activity.finish()
+                } .run {
+                    activity.finish()
+                    activity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
+                }
             }
 
             //标题栏信息
@@ -233,7 +236,10 @@ data class ToolBarHelperUtil(
             toolbarId.setNavigationOnClickListener {
                 barHelperConfig!!.onBackListener?.let {
                     it.onBackClick()
-                } ?: activity.finish()
+                } .run {
+                    activity.finish()
+                    activity.overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
+                }
             }
 
             //标题栏信息

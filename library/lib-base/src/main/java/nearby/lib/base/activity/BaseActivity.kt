@@ -7,6 +7,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import nearby.lib.base.R
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.bar.ToolBarHelperUtil
 import nearby.lib.base.bar.ToolBarHelperUtilBuilder
@@ -166,6 +167,7 @@ abstract class BaseActivity : AppCompatActivity(), ViewBehavior, NetworkListener
 
     override fun navigate(page: Any) {
         startActivity(Intent(this, page as Class<*>))
+        overridePendingTransition(R.anim.anim_no,R.anim.anim_no)
     }
 
     override fun backPress(arg: Any?) {
@@ -174,7 +176,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewBehavior, NetworkListener
 
     override fun finishPage(arg: Any?) {
         finish()
+        overridePendingTransition(R.anim.anim_no,R.anim.anim_no)
     }
-
-
 }

@@ -119,11 +119,7 @@ class RequestDialogFragment : BaseBindDialogFragment<FragmentRequestBinding>() {
             DatePickerDialog(requireActivity(),{ p0, p1, p2, p3 ->
                     println("p0 = $p0 - 年 = $p1 月 = $p2 日 = $p3")
 
-                },
-               hour,
-                month,
-                day
-            );
+                }, hour, month, day)
         timePickerDialog.datePicker.minDate= System.currentTimeMillis()-1000
         timePickerDialog.show();
     }

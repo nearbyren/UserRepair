@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import nearby.lib.base.R
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.bar.ToolBarHelperUtil
 import nearby.lib.base.network.NetworkListenerHelper
@@ -337,6 +338,7 @@ abstract class BaseLazyLoadFragment : Fragment(), ViewBehavior, NetworkListenerH
 
     override fun navigate(page: Any) {
         startActivity(Intent(requireContext(), page as Class<*>))
+        activity?.overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
     }
 
     override fun backPress(arg: Any?) {
@@ -345,6 +347,7 @@ abstract class BaseLazyLoadFragment : Fragment(), ViewBehavior, NetworkListenerH
 
     override fun finishPage(arg: Any?) {
         activity?.finish()
+        activity?.overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
     }
 
 }

@@ -1,25 +1,39 @@
 package apps.user.repair.dialog
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
+import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentRequestStatusBinding
 import apps.user.repair.model.AlbumDto
 import apps.user.repair.uitl.ConstantUtil
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import nearby.lib.base.dialog.BaseBindDialogFragment
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
 import nearby.lib.uikit.widgets.dpToPx
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatusBinding>() {
@@ -45,14 +59,12 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
                 ConstantUtil.SERVICE_STATUS_QUOTE -> {
                     binding.top.addressStatus.setCompoundDrawables(
                         ContextCompat.getDrawable(
-                            requireActivity(),
-                            R.drawable.index_status_shape_1
+                            requireActivity(), R.drawable.index_status_shape_1
                         ), null, null, null
                     )
                     binding.top.addressStatus.setTextColor(
                         ContextCompat.getColor(
-                            requireActivity(),
-                            R.color.item_status_1
+                            requireActivity(), R.color.item_status_1
                         )
                     )
 
@@ -69,20 +81,36 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
                 ConstantUtil.SERVICE_STATUS_QUOTED -> {
                     binding.top.addressStatus.setCompoundDrawables(
                         ContextCompat.getDrawable(
-                            requireActivity(),
-                            R.drawable.index_status_shape_2
+                            requireActivity(), R.drawable.index_status_shape_2
                         ), null, null, null
                     )
                     binding.top.addressStatus.setTextColor(
                         ContextCompat.getColor(
-                            requireActivity(),
-                            R.color.item_status_2
+                            requireActivity(), R.color.item_status_2
                         )
                     )
 
                     //隱藏已報價按鈕
                     binding.status23.isVisible = true
                     binding.dowQuote.isVisible = true
+                    binding.dowQuote.setOnClickListener {
+
+
+
+//                        Glide.with(requireActivity()).asBitmap().load("https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1")
+//                            .into(object : CustomTarget<Bitmap?>() {
+//
+//                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
+//                                    saveImageToGallery(requireActivity(),resource)
+//                                }
+//
+//                                override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+//                            })
+
+                        saveImageToExternalStorage(requireActivity(),"https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1","image_" + System.currentTimeMillis() + ".jpg")
+
+                    }
+
                     binding.confirm.isVisible = true
                     Glide.with(this).load(R.drawable.baojia).into(binding.baojiaimg)
 
@@ -91,14 +119,12 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
                 ConstantUtil.SERVICE_STATUS_CONFIRM -> {
                     binding.top.addressStatus.setCompoundDrawables(
                         ContextCompat.getDrawable(
-                            requireActivity(),
-                            R.drawable.index_status_shape_3
+                            requireActivity(), R.drawable.index_status_shape_3
                         ), null, null, null
                     )
                     binding.top.addressStatus.setTextColor(
                         ContextCompat.getColor(
-                            requireActivity(),
-                            R.color.item_status_3
+                            requireActivity(), R.color.item_status_3
                         )
                     )
                     Glide.with(this).load(R.drawable.baojia).into(binding.baojiaimg)
@@ -113,14 +139,12 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
                 ConstantUtil.SERVICE_STATUS_FINISH -> {
                     binding.top.addressStatus.setCompoundDrawables(
                         ContextCompat.getDrawable(
-                            requireActivity(),
-                            R.drawable.index_status_shape_4
+                            requireActivity(), R.drawable.index_status_shape_4
                         ), null, null, null
                     )
                     binding.top.addressStatus.setTextColor(
                         ContextCompat.getColor(
-                            requireActivity(),
-                            R.color.item_status_4
+                            requireActivity(), R.color.item_status_4
                         )
                     )
 
@@ -163,10 +187,68 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
 
             val result = "要求維修日期：9月1日"
             val ssb = SpannableStringBuilder(result)
-            ssb.setSpan(HomeClickSpan(requireContext(), ContextCompat.getColor(requireActivity(),nearby.lib.uikit.R.color.blue), ""), 7, result.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            ssb.setSpan(
+                HomeClickSpan(
+                    requireContext(),
+                    ContextCompat.getColor(requireActivity(), nearby.lib.uikit.R.color.blue),
+                    ""
+                ), 7, result.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
             binding.top.date.highlightColor = Color.TRANSPARENT
             binding.top.date.text = ssb
 
+        }
+    }
+    fun saveImageToExternalStorage(context: Context, imageUrl: String, fileName: String) {
+        Glide.with(context)
+            .asBitmap()
+            .load(imageUrl)
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    // 在这里处理 Bitmap，例如保存到外部存储
+
+                    // 保存到外部存储
+                    saveBitmapToExternalStorage(context, resource, fileName)
+                }
+            })
+    }
+
+    private fun saveBitmapToExternalStorage(context: Context, bitmap: Bitmap, fileName: String) {
+        val externalStorageState = Environment.getExternalStorageState()
+
+        if (externalStorageState == Environment.MEDIA_MOUNTED) {
+            val externalStorageDirectory = context.getExternalFilesDir(null)
+
+            if (externalStorageDirectory != null) {
+                val file = File(externalStorageDirectory, fileName)
+
+                try {
+                    FileOutputStream(file).use { out ->
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                        // 图片保存成功
+                    }
+                    println("保存圖片成功路徑 ${file.absolutePath}")
+                    // 其次把文件插入到系统图库
+                    try {
+                        MediaStore.Images.Media.insertImage(
+                            context.contentResolver,
+                            file.absolutePath,
+                            fileName,
+                            null
+                        )
+                        context.sendBroadcast(
+                            Intent(
+                                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                Uri.parse(file.absolutePath)
+                            ))
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // 图片保存失败
+                }
+            }
         }
     }
 

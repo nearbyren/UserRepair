@@ -2,6 +2,7 @@ package nearby.lib.mvvm.vm
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
@@ -57,7 +58,9 @@ abstract class BaseViewModel : ViewModel(), ViewModelLifecycle, ViewBehavior {
     // 不带参数的页面跳转Event
     var _pageNavigationEvent = MutableLiveData<Any>()
         private set
-
+    //带参数的页面跳转Event
+    var _pageDataNavigationEvent = MutableLiveData<Intent>()
+        private set
     // 点击系统返回键Event
     var _backPressEvent = MutableLiveData<Any?>()
         private set
@@ -131,6 +134,10 @@ abstract class BaseViewModel : ViewModel(), ViewModelLifecycle, ViewBehavior {
 
     override fun navigate(page: Any) {
         _pageNavigationEvent.postValue(page)
+    }
+
+    override fun navigateData(intent: Intent) {
+        _pageDataNavigationEvent.postValue(intent)
     }
 
     override fun backPress(arg: Any?) {

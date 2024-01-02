@@ -340,7 +340,10 @@ abstract class BaseLazyLoadFragment : Fragment(), ViewBehavior, NetworkListenerH
         startActivity(Intent(requireContext(), page as Class<*>))
         activity?.overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
     }
-
+    override fun navigateData(intent: Intent) {
+        startActivity(intent)
+        activity?.overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
+    }
     override fun backPress(arg: Any?) {
         activity?.onBackPressed()
     }

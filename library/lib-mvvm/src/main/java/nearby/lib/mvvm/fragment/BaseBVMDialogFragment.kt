@@ -51,6 +51,9 @@ abstract class BaseBVMDialogFragment<B : ViewDataBinding, VM : BaseViewModel> : 
         viewModel._pageNavigationEvent.observeNonNull(this) {
             navigate(it)
         }
+        viewModel._pageDataNavigationEvent.observeNonNull(this) {
+            navigateData(it)
+        }
         viewModel._backPressEvent.observeNonNull(this) {
             backPress(it)
         }

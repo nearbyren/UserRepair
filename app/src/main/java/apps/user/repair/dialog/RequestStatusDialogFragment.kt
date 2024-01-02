@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentRequestStatusBinding
+import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.AlbumDto
 import apps.user.repair.uitl.ConstantUtil
 import com.bumptech.glide.Glide
@@ -27,6 +28,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import nearby.lib.base.dialog.BaseBindDialogFragment
+import nearby.lib.base.exts.observeNonNull
+import nearby.lib.base.exts.observeNullable
+import nearby.lib.base.uitl.ToastEvent
+import nearby.lib.mvvm.fragment.BaseAppBVMDialogFragment
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
 import nearby.lib.uikit.widgets.dpToPx
@@ -36,18 +41,28 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 
-class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatusBinding>() {
+class RequestStatusDialogFragment :
+    BaseAppBVMDialogFragment<FragmentRequestStatusBinding, IndexViewModel>() {
 
     private var albumDtos = mutableListOf<AlbumDto>()
     private val itemAlbumAdapter by lazy { apps.user.repair.adapter.ItemShowAlbumAdapter() }
+    override fun createViewModel(): IndexViewModel {
+        return IndexViewModel()
+    }
 
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_request_status
     }
 
-    override fun initialize(view: View, savedInstanceState: Bundle?) {
+    override fun initialize(savedInstanceState: Bundle?) {
         binding.iconBack.setOnClickListener { dismiss() }
+
+        viewModel.inventoryDto.observeNonNull(this) {
+
+        }
+        viewModel.inventoryId(1)
+
         arguments?.let {
             val status = it.getInt("status")
             val statusText = it.getString("status_text")
@@ -96,7 +111,6 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
                     binding.dowQuote.setOnClickListener {
 
 
-
 //                        Glide.with(requireActivity()).asBitmap().load("https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1")
 //                            .into(object : CustomTarget<Bitmap?>() {
 //
@@ -107,7 +121,11 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
 //                                override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
 //                            })
 
-                        saveImageToExternalStorage(requireActivity(),"https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1","image_" + System.currentTimeMillis() + ".jpg")
+                        saveImageToExternalStorage(
+                            requireActivity(),
+                            "https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1",
+                            "image_" + System.currentTimeMillis() + ".jpg"
+                        )
 
                     }
 
@@ -199,7 +217,8 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
 
         }
     }
-    fun saveImageToExternalStorage(context: Context, imageUrl: String, fileName: String) {
+
+    private fun saveImageToExternalStorage(context: Context, imageUrl: String, fileName: String) {
         Glide.with(context)
             .asBitmap()
             .load(imageUrl)
@@ -240,7 +259,8 @@ class RequestStatusDialogFragment : BaseBindDialogFragment<FragmentRequestStatus
                             Intent(
                                 Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                                 Uri.parse(file.absolutePath)
-                            ))
+                            )
+                        )
                     } catch (e: FileNotFoundException) {
                         e.printStackTrace()
                     }

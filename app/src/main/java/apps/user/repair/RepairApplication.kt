@@ -8,6 +8,8 @@ import com.xsj.crasheye.Crasheye
 import nearby.lib.base.app.ApplicationProvider
 import nearby.lib.base.app.ModuleInit
 import nearby.lib.base.app.ModuleInitDelegate
+import nearby.lib.netwrok.base.HttpClient
+import nearby.lib.netwrok.response.CorHttp
 
 class RepairApplication : ApplicationProvider() {
 
@@ -17,6 +19,7 @@ class RepairApplication : ApplicationProvider() {
     override fun onCreate() {
         super.onCreate()
         // Obtain the FirebaseAnalytics instance.
+        CorHttp.getInstance().init(this)
         Crasheye.init(this, "ad9a3v6t")
         XGPushConfig.enableDebug(this,BuildConfig.DEBUG);
         XGPushManager.registerPush(this,object : XGIOperateCallback {

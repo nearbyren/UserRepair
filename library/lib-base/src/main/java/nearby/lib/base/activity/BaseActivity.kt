@@ -23,7 +23,8 @@ import nearby.lib.base.uitl.ToastEvent
 import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.router.Router
 
-abstract class BaseActivity : AppCompatActivity(), ViewBehavior, NetworkListenerHelper.NetworkConnectedListener {
+abstract class BaseActivity : AppCompatActivity(), ViewBehavior,
+    NetworkListenerHelper.NetworkConnectedListener {
 
     lateinit var barHelper: ToolBarHelperUtilBuilder
 
@@ -167,7 +168,12 @@ abstract class BaseActivity : AppCompatActivity(), ViewBehavior, NetworkListener
 
     override fun navigate(page: Any) {
         startActivity(Intent(this, page as Class<*>))
-        overridePendingTransition(R.anim.anim_no,R.anim.anim_no)
+        overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
+    }
+
+    override fun navigateData(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
     }
 
     override fun backPress(arg: Any?) {
@@ -176,6 +182,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewBehavior, NetworkListener
 
     override fun finishPage(arg: Any?) {
         finish()
-        overridePendingTransition(R.anim.anim_no,R.anim.anim_no)
+        overridePendingTransition(R.anim.anim_no, R.anim.anim_no)
     }
 }

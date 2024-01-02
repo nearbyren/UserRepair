@@ -1,5 +1,6 @@
 package nearby.lib.base.activity
 
+import android.content.Intent
 import nearby.lib.base.uitl.ToastEvent
 
 
@@ -14,6 +15,10 @@ interface ViewBehavior {
      */
     fun showToast(event: ToastEvent)
 
+    /**
+     * 带参数的页面跳转
+     */
+    fun navigateData(intent: Intent)
     /**
      * 不带参数的页面跳转
      */

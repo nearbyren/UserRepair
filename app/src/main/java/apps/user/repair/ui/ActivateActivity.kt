@@ -23,15 +23,12 @@ class ActivateActivity : BaseAppBindActivity<ActivityActivateBinding>() {
         binding.login.setOnClickListener {
             val intent = Intent(this, SignInLoginActivity::class.java)
             intent.putExtra(type, "1")
-            startActivity(intent)
-            finishPage(ActivateActivity@this)
+            navigateData(intent)
         }
         binding.sign.setOnClickListener {
             val intent = Intent(this, SignInLoginActivity::class.java)
             intent.putExtra(type, "0")
-            startActivity(intent)
-            finishPage(ActivateActivity@this)
+            navigateData(intent)
         }
     }
-
 }

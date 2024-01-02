@@ -217,6 +217,8 @@ dependencies {
     api 'me.jessyan:autosize:1.2.1'
     api Lib.youth
     api "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    // 权限请求框架：https://github.com/getActivity/XXPermissions
+    implementation 'com.github.getActivity:XXPermissions:16.2'
     //知乎相冊
     implementation 'com.zhihu.android:matisse:0.5.3-beta3'
     implementation 'com.ooimi:toastx:1.1.3'

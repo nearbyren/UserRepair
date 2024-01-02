@@ -1,10 +1,12 @@
 package nearby.lib.base.dialog
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
@@ -14,6 +16,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import nearby.lib.base.R
 import nearby.lib.base.activity.ViewBehavior
+import nearby.lib.base.uitl.ToastEvent
+import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.router.Router
 
 
@@ -21,7 +25,8 @@ import nearby.lib.router.Router
  * @description: DialogFragment的基类
  * @since: 1.0.0
  */
-abstract class BaseDialogFragment2 : AppCompatDialogFragment(), CoroutineScope by MainScope(), ViewBehavior {
+abstract class BaseDialogFragment2 : AppCompatDialogFragment(), CoroutineScope by MainScope(),
+    ViewBehavior {
     private var rootView: View? = null
 
     private var width: Int = ViewGroup.LayoutParams.MATCH_PARENT
@@ -164,5 +169,32 @@ abstract class BaseDialogFragment2 : AppCompatDialogFragment(), CoroutineScope b
 
     open fun addListener(action: ((json: String) -> Unit)?) {
        this.actionCallback = action
+    }
+
+    protected fun showToast(text: String, showLong: Boolean = false) {
+        showToast(ToastEvent(content = text, showLong = showLong))
+    }
+
+    protected fun showToast(@StringRes resId: Int, showLong: Boolean = false) {
+        showToast(ToastEvent(contentResId = resId, showLong = showLong))
+    }
+
+    override fun showToast(event: ToastEvent) {
+        if (event.content != null) {
+            ToastUtils.showToast(event.content!!, event.showLong)
+        } else if (event.contentResId != null) {
+            ToastUtils.showToast(getString(event.contentResId!!), event.showLong)
+        }
+    }
+    override fun navigate(page: Any) {
+    }
+
+    override fun navigateData(intent: Intent) {
+    }
+
+    override fun backPress(arg: Any?) {
+    }
+
+    override fun finishPage(arg: Any?) {
     }
 }

@@ -55,6 +55,9 @@ abstract class BaseBVMActivity<B : ViewDataBinding, VM : BaseViewModel> : BaseBi
         viewModel._pageNavigationEvent.observeNonNull(this) {
             navigate(it)
         }
+        viewModel._pageDataNavigationEvent.observeNonNull(this) {
+            navigateData(it)
+        }
         viewModel._backPressEvent.observeNullable(this) {
             backPress(it)
         }

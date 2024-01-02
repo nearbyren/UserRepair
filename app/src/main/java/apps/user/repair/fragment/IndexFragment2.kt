@@ -9,11 +9,14 @@ import apps.user.repair.dialog.RequestStatusDialogFragment
 import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.ServiceDto
 import apps.user.repair.uitl.ConstantUtil
+import com.app.toast.ToastX
+import com.app.toast.expand.dp
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import nearby.lib.base.bar.BarHelperConfig
+import nearby.lib.base.exts.observeNonNull
 import nearby.lib.mvvm.fragment.BaseAppBVMFragment
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
@@ -39,6 +42,19 @@ class IndexFragment2 :
     private val indexTagAdapter by lazy { apps.user.repair.adapter.ItemServiceStatusAdapter() }
     private var layoutManager: LinearLayoutManager? = null
     override fun initialize(savedInstanceState: Bundle?) {
+        //請求維修列表
+        viewModel.inventory()
+        viewModel.serviceDtos.observeNonNull(this) {
+            if (it.size == 0) {
+                return@observeNonNull
+            }
+            activityItems.addAll(it)
+            indexTagAdapter.notifyDataSetChanged()
+        }
+        initRefresh()
+    }
+
+    private fun initRefresh() {
         activityItems.add(
             ServiceDto(
                 "學校大門",
@@ -131,8 +147,9 @@ class IndexFragment2 :
                 request.show(this@IndexFragment2)
             }
         })
+
         binding.srl.setRefreshHeader(ClassicsHeader(requireActivity()))
-        binding.srl.setRefreshFooter( ClassicsFooter(requireActivity()))
+        binding.srl.setRefreshFooter(ClassicsFooter(requireActivity()))
         //设置 Footer 为 球脉冲 样式
 //        binding.srl.setRefreshFooter(BallPulseFooter(requireActivity()).setSpinnerStyle(SpinnerStyle.Scale));
 
@@ -158,10 +175,12 @@ class IndexFragment2 :
     }
 
 
-
     override fun initBarHelperConfig(): BarHelperConfig {
         return BarHelperConfig.builder().setBack(false)
             .setBgColor(nearby.lib.base.R.color.dodgerblue)
-            .setTitle(title = getString(R.string.menu_02), titleColor = nearby.lib.base.R.color.white).build()
+            .setTitle(
+                title = getString(R.string.menu_02),
+                titleColor = nearby.lib.base.R.color.white
+            ).build()
     }
 }

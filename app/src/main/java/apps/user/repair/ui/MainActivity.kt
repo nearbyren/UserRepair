@@ -100,7 +100,6 @@ class MainActivity : BaseAppBindActivity<ActivityMainBinding>() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (isExit) {
-                this.finish()
                 AppManager.getInstance().finishAllActivity()
             } else {
                 ToastUtils.showToast("再按一次退出！")

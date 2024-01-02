@@ -6,6 +6,7 @@ import android.view.Gravity
 import androidx.recyclerview.widget.GridLayoutManager
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentIndex1Binding
+import apps.user.repair.dialog.RequestDialogFragment
 import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.AdBannerDto
 import apps.user.repair.model.IndexItemTagDto
@@ -34,15 +35,16 @@ class IndexFragment1 : BaseAppBVMFragment<FragmentIndex1Binding, IndexViewModel>
     private var activityItems = mutableListOf<IndexItemTagDto>()
     private val indexTagAdapter by lazy { apps.user.repair.adapter.ItemIndexContentTagAdapter() }
     override fun initialize(savedInstanceState: Bundle?) {
-        activityItems.add(IndexItemTagDto("水喉渠務", R.drawable.item1))
-        activityItems.add(IndexItemTagDto("防漏防水", R.drawable.item2))
-        activityItems.add(IndexItemTagDto("門窗", R.drawable.item3))
-        activityItems.add(IndexItemTagDto("木工", R.drawable.item4))
-        activityItems.add(IndexItemTagDto("廢物處理", R.drawable.item1))
-        activityItems.add(IndexItemTagDto("冷氣", R.drawable.item2))
-        activityItems.add(IndexItemTagDto("電燈", R.drawable.item3))
-        activityItems.add(IndexItemTagDto("定期保養", R.drawable.item4))
-        activityItems.add(IndexItemTagDto("其他", R.drawable.item1))
+        //0:水喉渠务，1:防漏防水，2:门窗，3:木工，4:废物处理，5:冷气，6:电灯，7:定期保养，8:其他
+        activityItems.add(IndexItemTagDto("水喉渠務", R.drawable.item1, type = 0))
+        activityItems.add(IndexItemTagDto("防漏防水", R.drawable.item2, type = 1))
+        activityItems.add(IndexItemTagDto("門窗", R.drawable.item3, type = 2))
+        activityItems.add(IndexItemTagDto("木工", R.drawable.item4, type = 3))
+        activityItems.add(IndexItemTagDto("廢物處理", R.drawable.item1, type = 4))
+        activityItems.add(IndexItemTagDto("冷氣", R.drawable.item2, type = 5))
+        activityItems.add(IndexItemTagDto("電燈", R.drawable.item3, type = 6))
+        activityItems.add(IndexItemTagDto("定期保養", R.drawable.item4, type = 7))
+        activityItems.add(IndexItemTagDto("其他", R.drawable.item1, type = 8))
         indexTagAdapter.setItems(activityItems)
         binding.recycle.adapter = indexTagAdapter
         binding.recycle.layoutManager = GridLayoutManager(context, 3)
@@ -52,7 +54,10 @@ class IndexFragment1 : BaseAppBVMFragment<FragmentIndex1Binding, IndexViewModel>
         indexTagAdapter.setOnItemClickListener(listener = object :
             BaseRecyclerAdapter.OnItemClickListener<IndexItemTagDto> {
             override fun onItemClick(holder: Any, item: IndexItemTagDto, position: Int) {
-                val request = apps.user.repair.dialog.RequestDialogFragment()
+                val request = RequestDialogFragment()
+                val arguments = Bundle()
+                arguments.putInt("type", item.type)
+                request.arguments = arguments
                 request.show(this@IndexFragment1)
             }
         })

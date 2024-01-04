@@ -43,7 +43,6 @@ class IndexViewModel : BaseAppViewModel() {
 
     fun inventory() {
         launchOnUI {
-            showLoadingView(true)
             val params = mutableMapOf<String, Any>()
             repo.inventory(params).onSuccess {
                 serviceDtos.value = it
@@ -232,7 +231,7 @@ class IndexViewModel : BaseAppViewModel() {
 
     fun start() {
         launchOnUI {
-            delay(2000)
+            delay(500)
             start.value = true
 
         }

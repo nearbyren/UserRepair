@@ -86,7 +86,7 @@ class SignInLoginActivity : BaseBVMActivity<ActivitySignInLoginBinding, IndexVie
             val intent = Intent(this, SubmitCardActivity::class.java)
             intent.putExtra("email", email)
             intent.putExtra("password", password)
-            startActivity(intent)
+            navigateData(intent)
         }
     }
 

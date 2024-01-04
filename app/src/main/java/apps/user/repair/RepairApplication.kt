@@ -8,7 +8,6 @@ import com.xsj.crasheye.Crasheye
 import nearby.lib.base.app.ApplicationProvider
 import nearby.lib.base.app.ModuleInit
 import nearby.lib.base.app.ModuleInitDelegate
-import nearby.lib.netwrok.base.HttpClient
 import nearby.lib.netwrok.response.CorHttp
 
 class RepairApplication : ApplicationProvider() {
@@ -30,7 +29,6 @@ class RepairApplication : ApplicationProvider() {
             override fun onFail(p0: Any?, errCode: Int, msg: String?) {
                 println("注册失败，错误码：$errCode,错误信息：$msg")
             }
-
         })
     }
 }

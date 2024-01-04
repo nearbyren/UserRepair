@@ -64,7 +64,7 @@
 
     <!--啟動頁-->
     <style name="launcher_theme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/launcher_bg</item>
+        <item name="android:windowBackground">@drawable/home_layer_launcher_logo</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 

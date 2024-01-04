@@ -43,7 +43,7 @@ class IndexFragment2 :
     private var layoutManager: LinearLayoutManager? = null
     override fun initialize(savedInstanceState: Bundle?) {
         //請求維修列表
-        viewModel.inventory()
+//        viewModel.inventory()
         viewModel.serviceDtos.observeNonNull(this) {
             if (it.size == 0) {
                 return@observeNonNull

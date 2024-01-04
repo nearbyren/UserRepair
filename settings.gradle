@@ -8,6 +8,16 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven {
+            url 'https://gitlab.com/api/v4/projects/52680346/packages/maven'
+            credentials(HttpHeaderCredentials) {
+                name = "Private-Token"
+                value = "glpat-yKqsjcZEs7kDvsuqcbkV"
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
         maven { url 'https://maven.aliyun.com/repository/central/' }
         maven { url 'https://maven.aliyun.com/repository/public/' }
         maven { url 'https://maven.aliyun.com/repository/jcenter/' }
@@ -15,6 +25,7 @@ dependencyResolutionManagement {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         // JitPack 远程仓库：https://jitpack.io
         maven { url 'https://jitpack.io' }
+
         google()
         mavenCentral()
     }

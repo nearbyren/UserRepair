@@ -41,5 +41,8 @@ android {
 }
 
 dependencies {
+    testImplementation Testing.jUnit
+    androidTestImplementation Testing.androidJunit
+    androidTestImplementation Testing.espresso
     api project(path: ':library:lib-common')
 }

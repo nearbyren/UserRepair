@@ -37,7 +37,9 @@ android {
 }
 
 dependencies {
-
+    testImplementation Testing.jUnit
+    androidTestImplementation Testing.androidJunit
+    androidTestImplementation Testing.espresso
     implementation project(path: ':library:lib-base')
     implementation project(path: ':library:lib-netwrok')
 

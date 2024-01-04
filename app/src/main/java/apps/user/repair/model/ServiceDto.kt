@@ -15,4 +15,6 @@ data class ServiceDto(
     var memberName: String?=null,
     //序号
     var identifier: String?=null,
+    //学校图片
+    var schoolImage: String?=null,
 )

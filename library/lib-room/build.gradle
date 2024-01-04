@@ -46,6 +46,9 @@ android {
 }
 
 dependencies {
+    testImplementation Testing.jUnit
+    androidTestImplementation Testing.androidJunit
+    androidTestImplementation Testing.espresso
     def room_version = "2.4.2"
 
     implementation "androidx.room:room-runtime:$room_version"

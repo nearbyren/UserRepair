@@ -11,15 +11,14 @@ import com.app.toast.expand.dp
 import apps.user.repair.R
 import apps.user.repair.databinding.ActivitySignInLoginBinding
 import apps.user.repair.http.IndexViewModel
+import apps.user.repair.uitl.SPreUtil
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.exts.observeNonNull
-import nearby.lib.base.exts.observeNullable
 import nearby.lib.base.uitl.AppManager
-import nearby.lib.mvvm.activity.BaseAppBindActivity
-import nearby.lib.mvvm.activity.BaseBVMActivity
+import nearby.lib.mvvm.activity.BaseAppBVMActivity
 
 
-class SignInLoginActivity : BaseBVMActivity<ActivitySignInLoginBinding, IndexViewModel>() {
+class SignInLoginActivity : BaseAppBVMActivity<ActivitySignInLoginBinding, IndexViewModel>() {
 
 
     private var type: String? = ""
@@ -60,14 +59,19 @@ class SignInLoginActivity : BaseBVMActivity<ActivitySignInLoginBinding, IndexVie
                 toast(it.message!!)
                 return@observeNonNull
             }
+            SPreUtil.put(this@SignInLoginActivity,"id",it.id.toString())
+            SPreUtil.put(this@SignInLoginActivity,"email",it.email.toString())
+            SPreUtil.put(this@SignInLoginActivity,"name",it.name.toString())
+            SPreUtil.put(this@SignInLoginActivity,"shoolName",it.shoolName.toString())
+            SPreUtil.put(this@SignInLoginActivity,"token",it.token.toString())
+            SPreUtil.put(this@SignInLoginActivity,"isLogin",true)
             println("進入主界面")
             navigate(MainActivity::class.java)
             AppManager.getInstance().finishAllActivity()
         }
     }
 
-    override fun showLoadingView(isShow: Boolean) {
-    }
+
 
     private fun go() {
         val email = binding.emailEt.text.toString()

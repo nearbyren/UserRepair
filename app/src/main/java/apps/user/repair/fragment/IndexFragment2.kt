@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.Gravity
 import androidx.recyclerview.widget.LinearLayoutManager
 import apps.user.repair.R
+import apps.user.repair.adapter.ItemServiceStatusAdapter
 import apps.user.repair.databinding.FragmentIndex2Binding
 import apps.user.repair.dialog.RequestStatusDialogFragment
 import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.ServiceDto
-import apps.user.repair.uitl.ConstantUtil
-import com.app.toast.ToastX
-import com.app.toast.expand.dp
+import apps.user.repair.uitl.SPreUtil
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
@@ -39,12 +38,22 @@ class IndexFragment2 :
     }
 
     private var activityItems = mutableListOf<ServiceDto>()
-    private val indexTagAdapter by lazy { apps.user.repair.adapter.ItemServiceStatusAdapter() }
+    private val indexTagAdapter by lazy { ItemServiceStatusAdapter() }
     private var layoutManager: LinearLayoutManager? = null
-    override fun initialize(savedInstanceState: Bundle?) {
+    private var isRefresh = false
+
+    private fun toNetwork() {
         //請求維修列表
-//        viewModel.inventory()
+        val id = SPreUtil[requireActivity(), "id", "1"]
+        viewModel.inventoryId(id.toString())
+    }
+
+    override fun initialize(savedInstanceState: Bundle?) {
+
         viewModel.serviceDtos.observeNonNull(this) {
+            // 这里可以异步请求数据，刷新完成后调用 refreshLayout.finishRefresh()
+            binding.srl.finishRefresh()
+            if (isRefresh) activityItems.clear()
             if (it.size == 0) {
                 return@observeNonNull
             }
@@ -52,81 +61,10 @@ class IndexFragment2 :
             indexTagAdapter.notifyDataSetChanged()
         }
         initRefresh()
+        toNetwork()
     }
 
     private fun initRefresh() {
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "預備報價中",
-                ConstantUtil.SERVICE_STATUS_QUOTE
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "已报价，等待確認",
-                ConstantUtil.SERVICE_STATUS_QUOTED
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "已确认，正在安排师傅",
-                ConstantUtil.SERVICE_STATUS_CONFIRM
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "已完成",
-                ConstantUtil.SERVICE_STATUS_FINISH
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "預備報價中",
-                ConstantUtil.SERVICE_STATUS_QUOTE
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "已报价，等待確認",
-                ConstantUtil.SERVICE_STATUS_QUOTED
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "已确认，正在安排师傅",
-                ConstantUtil.SERVICE_STATUS_CONFIRM
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "已完成",
-                ConstantUtil.SERVICE_STATUS_FINISH
-            )
-        )
-        activityItems.add(
-            ServiceDto(
-                "學校大門",
-                "編號",
-                "預備報價中",
-                ConstantUtil.SERVICE_STATUS_QUOTE
-            )
-        )
         layoutManager = LinearLayoutManager(context)
         indexTagAdapter.setItems(activityItems)
         binding.recycle.adapter = indexTagAdapter
@@ -139,9 +77,7 @@ class IndexFragment2 :
             override fun onItemClick(holder: Any, item: ServiceDto, position: Int) {
                 val request = RequestStatusDialogFragment()
                 val bundle = Bundle()
-                bundle.putInt("status", item.status)
-                bundle.putString("address", item.schoolName)
-                bundle.putString("status_text", item.statusText)
+                bundle.putString("numbers", item.numbers)
                 request.arguments = bundle
                 request.setGravity(Gravity.BOTTOM)
                 request.show(this@IndexFragment2)
@@ -154,18 +90,10 @@ class IndexFragment2 :
 //        binding.srl.setRefreshFooter(BallPulseFooter(requireActivity()).setSpinnerStyle(SpinnerStyle.Scale));
 
         binding.srl.setOnRefreshListener(OnRefreshListener { refreshlayout ->
-            refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
-        })
-        binding.srl.setOnLoadMoreListener(OnLoadMoreListener { refreshlayout ->
-            refreshlayout.finishLoadMore(2000 /*,false*/) //传入false表示加载失败
+            isRefresh = true
+            toNetwork()
         })
 
-
-        // 设置下拉刷新监听
-        binding.srl.setOnRefreshListener { refreshLayout -> // 执行刷新操作
-            // 这里可以异步请求数据，刷新完成后调用 refreshLayout.finishRefresh()
-            binding.srl.finishRefresh()
-        }
 
         // 设置上拉加载更多监听
         binding.srl.setOnLoadMoreListener { refreshLayout -> // 执行加载更多操作

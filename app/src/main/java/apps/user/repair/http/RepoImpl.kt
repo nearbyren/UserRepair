@@ -17,24 +17,24 @@ import nearby.lib.netwrok.response.ResponseHolder
 
 class RepoImpl : Repo {
 
-    override suspend fun inventory(
+    override suspend fun numbers(
         params: MutableMap<String, Any>
-    ): ResponseHolder<MutableList<ServiceDto>> {
-        return CorHttp.getInstance().post(
-            url = ApiHttpUrl.inventory,
+    ): ResponseHolder<InventoryDto> {
+        return CorHttp.getInstance().get(
+            url = ApiHttpUrl.numbers,
             params = params,
-            type = object : TypeToken<InfoResponse<MutableList<ServiceDto>>>() {}.type
+            type = object : TypeToken<InfoResponse<InventoryDto>>() {}.type
         )
     }
 
     override suspend fun inventoryId(
         params: MutableMap<String, Any>,
-        id: Int
-    ): ResponseHolder<InventoryDto> {
-        return CorHttp.getInstance().post(
+        id: String
+    ): ResponseHolder<MutableList<ServiceDto>> {
+        return CorHttp.getInstance().get(
             url = "${ApiHttpUrl.inventory_id}${id}",
             params = params,
-            type = object : TypeToken<InfoResponse<InventoryDto>>() {}.type
+            type = object : TypeToken<InfoResponse<MutableList<ServiceDto>>>() {}.type
         )
     }
 
@@ -73,12 +73,12 @@ class RepoImpl : Repo {
         )
     }
 
-    override suspend fun revisePasswordId(
-        params: MutableMap<String, Any>,
-        id: Int
+    override suspend fun revisePassword(
+        params: MutableMap<String, Any>
+
     ): ResponseHolder<EditPasswordDto> {
         return CorHttp.getInstance().post(
-            url = "${ApiHttpUrl.revisePassword_id}${id}",
+            url = "${ApiHttpUrl.revisePassword}",
             params = params,
             type = object : TypeToken<InfoResponse<EditPasswordDto>>() {}.type
         )
@@ -103,7 +103,7 @@ class RepoImpl : Repo {
 
     override suspend fun submit(params: MutableMap<String, Any>): ResponseHolder<SubmitDto> {
         return CorHttp.getInstance().post(
-            url = ApiHttpUrl.submit,
+            url = ApiHttpUrl. submit,
             params = params,
             type = object : TypeToken<InfoResponse<SubmitDto>>() {}.type
         )
@@ -114,6 +114,17 @@ class RepoImpl : Repo {
             url = ApiHttpUrl.logout,
             params = params,
             type = object : TypeToken<InfoResponse<LogoutDto>>() {}.type
+        )
+    }
+
+    override suspend fun upload(
+        params: MutableMap<String, Any>
+    ): ResponseHolder<String> {
+        return CorHttp.getInstance().postMultipart(
+            url = ApiHttpUrl.upload,
+            headers = null,
+            params = params,
+            type = object : TypeToken<InfoResponse<String>>() {}.type
         )
     }
 }

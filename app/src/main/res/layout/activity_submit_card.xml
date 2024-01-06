@@ -123,7 +123,7 @@
                         android:background="@drawable/edit_bg_layer_list"
                         android:gravity="center_horizontal|left"
                         android:hint=""
-                        android:inputType="textEmailAddress"
+                        android:inputType="phone"
                         android:paddingLeft="@dimen/dp_10"
                         android:paddingTop="@dimen/dp_10"
                         android:textSize="@dimen/sp_14"

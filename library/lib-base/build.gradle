@@ -103,5 +103,5 @@ dependencies {
     implementation Lib.arouterApi
     kapt Lib.arouterCompiler
     implementation project(path: ':library:lib-router')
-//    api project(path: ':library:lib-uikit')
+    api project(path: ':library:lib-uikit')
 }

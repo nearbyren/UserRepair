@@ -3,6 +3,7 @@ package apps.user.repair.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentIndex1Binding
@@ -10,8 +11,11 @@ import apps.user.repair.dialog.RequestDialogFragment
 import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.AdBannerDto
 import apps.user.repair.model.IndexItemTagDto
+import apps.user.repair.uitl.ConstantUtil
+import apps.user.repair.uitl.SPreUtil
 import com.youth.banner.indicator.RectangleIndicator
 import nearby.lib.base.bar.BarHelperConfig
+import nearby.lib.base.exts.observeNonNull
 import nearby.lib.mvvm.fragment.BaseAppBVMFragment
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
@@ -78,6 +82,71 @@ class IndexFragment1 : BaseAppBVMFragment<FragmentIndex1Binding, IndexViewModel>
                 binding.srl.isRefreshing = false
 
             }, 2000)
+        }
+        //請求維修列表
+        val id = SPreUtil[requireActivity(), "id", "1"]
+        viewModel.inventoryId(id.toString())
+        viewModel.serviceDtos.observeNonNull(this) {
+            // 这里可以异步请求数据，刷新完成后调用 refreshLayout.finishRefresh()
+            if (it.size == 0) {
+                return@observeNonNull
+            }
+            binding.address.text = it[0].repairAddress
+            binding.addressNo.text = it[0].describes
+
+            when (it[0].state) {
+                ConstantUtil.SERVICE_STATUS_QUOTE -> {
+                    binding.addressStatus.text = "準備報價中"
+                    println("我来了....when ${ConstantUtil.SERVICE_STATUS_QUOTE}")
+                    val img = ContextCompat.getDrawable(requireActivity(), R.drawable.index_status_shape_1)
+                    binding.addressStatus.setCompoundDrawables(img, null, null, null)
+                    binding.addressStatus.setTextColor(
+                        ContextCompat.getColor(
+                            requireActivity(),
+                            R.color.item_status_1
+                        )
+                    )
+                }
+
+                ConstantUtil.SERVICE_STATUS_QUOTED -> {
+                    binding.addressStatus.text = "已报价，等待確認"
+                    println("我来了....when ${ConstantUtil.SERVICE_STATUS_QUOTED}")
+                    val img = ContextCompat.getDrawable(requireActivity(), R.drawable.index_status_shape_2)
+                    binding.addressStatus.setCompoundDrawables(img, null, null, null)
+                    binding.addressStatus.setTextColor(
+                        ContextCompat.getColor(
+                            requireActivity(),
+                            R.color.item_status_2
+                        )
+                    )
+                }
+
+                ConstantUtil.SERVICE_STATUS_CONFIRM -> {
+                    binding.addressStatus.text = "已确认，正在安排师傅"
+                    println("我来了....when ${ConstantUtil.SERVICE_STATUS_CONFIRM}")
+                    val img = ContextCompat.getDrawable(requireActivity(), R.drawable.index_status_shape_3)
+                    binding.addressStatus.setCompoundDrawables(img, null, null, null)
+                    binding.addressStatus.setTextColor(
+                        ContextCompat.getColor(
+                            requireActivity(),
+                            R.color.item_status_3
+                        )
+                    )
+                }
+
+                ConstantUtil.SERVICE_STATUS_FINISH -> {
+                    binding.addressStatus.text = "已完成"
+                    println("我来了....when ${ConstantUtil.SERVICE_STATUS_FINISH}")
+                    val img = ContextCompat.getDrawable(requireActivity(), R.drawable.index_status_shape_4)
+                    binding.addressStatus.setCompoundDrawables(img, null, null, null)
+                    binding.addressStatus.setTextColor(
+                        ContextCompat.getColor(
+                            requireActivity(),
+                            R.color.item_status_4
+                        )
+                    )
+                }
+            }
         }
     }
 

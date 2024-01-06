@@ -6,15 +6,17 @@ package apps.user.repair.model
  * @description:
  */
 data class ServiceDto(
-    var schoolName: String,
-    var schoolNo: String,
-    var statusText: String,
+    var repairAddress: String,
+    //详情地址
+    var describes: String,
     //状态：0:未报价，1:已报价 2:已确认 3:未确认 4:未委派，5:已委派，6:未完成，7:已完成
-    var status: Int= 8,
+    var state: Int,
+    //订单号
+    var numbers: String,
     //会员名称
-    var memberName: String?=null,
+    var memberName: String? = null,
     //序号
-    var identifier: String?=null,
+    var identifier: String? = null,
     //学校图片
-    var schoolImage: String?=null,
+    var addressImage: String? = null,
 )

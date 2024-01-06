@@ -7,6 +7,7 @@ import android.view.View
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentSignOutBinding
 import apps.user.repair.http.IndexViewModel
+import apps.user.repair.uitl.SPreUtil
 import com.app.toast.ToastX
 import com.app.toast.expand.dp
 import nearby.lib.base.dialog.BaseBindDialogFragment
@@ -31,9 +32,10 @@ class SignOutDialogFragment : BaseAppBVMDialogFragment<FragmentSignOutBinding, I
         }
         viewModel.logoutDto.observeNonNull(this) {
             if (!TextUtils.isEmpty(it.msg)) {
-                toast(it.msg)
+                toast(it.msg!!)
                 return@observeNonNull
             }
+            SPreUtil.put(requireActivity(),"isLogin",false)
             AppManager.getInstance().finishAllActivity()
             dismiss()
         }

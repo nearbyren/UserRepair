@@ -8,7 +8,6 @@ import apps.user.repair.model.IndexItemTagDto
 import nearby.lib.uikit.recyclerview.BaseBindRecyclerAdapter
 
 
-
 class ItemIndexContentTagAdapter : BaseBindRecyclerAdapter<ItemContentTagBinding, IndexItemTagDto>() {
 
     override fun getLayoutId(viewType: Int): Int {

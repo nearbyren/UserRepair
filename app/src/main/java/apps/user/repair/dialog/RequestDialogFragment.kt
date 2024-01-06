@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.Gravity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -17,6 +18,9 @@ import apps.user.repair.uitl.ConstantUtil
 import apps.user.repair.uitl.ConstantUtil.ALBUM_REQUEST_CODE
 import apps.user.repair.uitl.FileService
 import apps.user.repair.uitl.RxRetrofitFactory
+import apps.user.repair.uitl.SPreUtil
+import com.app.toast.ToastX
+import com.app.toast.expand.dp
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
@@ -24,6 +28,7 @@ import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.internal.entity.CaptureStrategy
+import nearby.lib.base.exts.observeNonNull
 import nearby.lib.base.uitl.ToastEvent
 import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.mvvm.fragment.BaseAppBVMDialogFragment
@@ -121,17 +126,81 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                 ToastUtils.showToast("請上傳維修位置圖")
                 return@setOnClickListener
             }
+            var locationImage = StringBuilder()
+            val size = list.size
+            for (i in 0 until size) {
+                val t = size - 1
+                println("我来了 $t ")
+                if (list.size > 1 && i < t) {
+                    locationImage.append("${list[i]},")
+                } else {
+                    locationImage.append("${list[i]}")
+                }
+            }
             //是否緊急
             val urgent = if (binding.clUrgent.isVisible) 1 else 0
+            if (urgent == 1 && TextUtils.isEmpty(urgentTime)) {
+                ToastUtils.showToast("请选择紧急时间")
+                return@setOnClickListener
+            }
             //緊急事件
             urgentTime?.let { time ->
                 urgentTime = time
             }
-            viewModel.submit(address, detail, addressImage!!, "", urgent, urgentTime, type, "")
+            val id = SPreUtil[requireActivity(), "id", "1"]
+            viewModel.submit(
+                address,
+                detail,
+                addressImage!!,
+                locationImage.toString(),
+                urgent,
+                urgentTime,
+                type,
+                id.toString()
+            )
+        }
+        viewModel.submit.observeNonNull(this) {
+            if (!TextUtils.isEmpty(it.msg)) {
+                toast(it.msg!!)
+                return@observeNonNull
+            }
+            toast("维修请求成")
+            dismiss()
         }
 
+        viewModel.fileSuccess.observeNonNull(this) {
+            if (!TextUtils.isEmpty(it.msg)) {
+                toast(it.msg!!)
+                return@observeNonNull
+            }
+            toast("上传成功")
+            if (repType == ConstantUtil.ALBUM_LEAFLET) {
+                addressImage = it.path
+                Glide.with(requireActivity()).load(addressImage).into(binding.ivRepLoc1)
+            } else {
+                list.add(it.path!!)
+                itemAlbumAdapter.nodfiyData(list)
+            }
+        }
     }
 
+    private fun toast(text: String) {
+        ToastX.with(requireActivity())
+            .text(text) //文字
+            .backgroundColor(nearby.lib.base.R.color.blue) //背景
+            .animationMode(ToastX.ANIM_MODEL_SLIDE) //动画模式 弹出或者渐变
+            .textColor(nearby.lib.uikit.R.color.white) //文字颜色
+            .position(ToastX.POSITION_TOP) //显示的位置 顶部或者底部
+            .textGravity(Gravity.CENTER) //文字的位置
+            .duration(ToastX.DURATION_LONG) //显示的时间 单位ms
+            .textSize(14f) //文字大小 单位sp
+            .padding(10.dp, 10.dp) //左右内边距
+            .margin(15.dp, 15.dp) //左右外边距
+            .radius(10f.dp) //圆角半径
+            .offset(44.dp) //距离顶部或者底部的偏移量
+            .duration(2000)
+            .show() //显示
+    }
 
     private fun goXXPermissions() {
         val p = mutableListOf(
@@ -199,7 +268,20 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
         val timePickerDialog =
             DatePickerDialog(requireActivity(), { p0, p1, p2, p3 ->
                 println("p0 = $p0 - 年 = $p1 月 = $p2 日 = $p3")
-                urgentTime = "$p1/$p2/$p3"
+                var pp2: String? = null
+                var pp3: String? = null
+                if (p2 == 9) {
+                    pp2 = "10"
+                } else {
+                    pp2 = "0${p2 + 1}"
+                }
+                if (p3 < 9) {
+                    pp3 = "0${p3}"
+                } else {
+                    pp3 = p3.toString()
+                }
+                urgentTime = "$p1-$pp2-$pp3"
+                binding.urgentText.text = urgentTime
 
             }, hour, month, day)
         timePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
@@ -241,7 +323,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                         ConstantUtil.ALBUM_LEAFLET -> {
                             val photoPath = Matisse.obtainPathResult(it)[0]
                             photoPath?.let { path ->
-                                upload(repType, path)
+                                upload(path)
                             }
                         }
 
@@ -250,9 +332,8 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                             for (i in 0 until pathList.size) {
                                 val path = pathList[i]
                                 println("图片${(i + 1)} 地址 $path")
-                                upload(repType, path)
+                                upload(path)
                             }
-                            itemAlbumAdapter.nodfiyData(list)
                         }
 
                         else -> {}
@@ -263,7 +344,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
         }
     }
 
-    private fun upload(repType: Int, path: String) {
+    private fun upload(path: String) {
         val f = File(path)
         val requestFile =
             f.asRequestBody("application/otcet-stream".toMediaTypeOrNull())
@@ -272,28 +353,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
             "avatar_${System.currentTimeMillis()}",
             requestFile
         )
-        RxRetrofitFactory.createGson(FileService::class.java).upload(part)
-            .enqueue(object : Callback<FileDto?> {
-                override fun onResponse(
-                    call: Call<FileDto?>,
-                    response: Response<FileDto?>
-                ) {
-                    response.body()?.let {
-                        if (repType == ConstantUtil.ALBUM_LEAFLET) {
-                            addressImage = it.data
-                            Glide.with(requireActivity()).load(f)
-                                .into(binding.ivRepLoc1)
-                        } else {
-                            list.add(path)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<FileDto?>, t: Throwable) {
-                    ToastUtils.showToast("上传头像失败")
-                }
-
-            })
+        viewModel.upload(File(path))
     }
 
 }

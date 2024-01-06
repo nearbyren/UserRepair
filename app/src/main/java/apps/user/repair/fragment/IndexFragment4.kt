@@ -44,6 +44,7 @@ class IndexFragment4 : BaseAppBVMFragment<FragmentIndex4Binding, IndexViewModel>
 
         val emailHas = SPreUtil[requireActivity(), "email_has", false]
         val email = SPreUtil[requireActivity(), "email", "-"]
+        val shoolName = SPreUtil[requireActivity(), "shoolName", "-"]
 
         println("emailHas $emailHas")
         //郵件賬號
@@ -51,7 +52,7 @@ class IndexFragment4 : BaseAppBVMFragment<FragmentIndex4Binding, IndexViewModel>
         emailHas?.let {
             binding.emailVerified.isVisible = it as Boolean
         }
-
+        binding.schoolNameContent.text = shoolName.toString()
 
     }
 

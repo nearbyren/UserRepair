@@ -16,7 +16,7 @@ class CorHttp {
     private val httClient by lazy { HttpClient() }
     private val LOG_TAG = "CorHttp>>>"
     private val LOG_DIVIDER = "||================================================================="
-    private var BASE_URL = "https://xxx.xxx.com"
+    private var BASE_URL = "http://192.168.31.41:8099"
 
     fun setBaseUrl(baseUrl: String) {
         if (TextUtils.isEmpty(baseUrl)) return
@@ -43,9 +43,9 @@ class CorHttp {
 
     fun init(context: Context) {
         val config = HttpClientConfig.builder()
-                .setBaseUrl("${BASE_URL}/xxxxx/")
+                .setBaseUrl("${BASE_URL}/")
 //                .setCache(Cache(File(context.cacheDir.toString() + "ENSDHttpCache"), 1024L * 1024 * 100))
-                .openLog(false)
+                .openLog(true)
                 .setGson(Gson())
                 .setLogger(object : HttpLoggingInterceptor.Logger {
                     override fun log(message: String) {
@@ -123,4 +123,16 @@ class CorHttp {
         type: Type,
         isInfoResponse: Boolean = true,
     ): ResponseHolder<T> = httClient.postJsonString(url, headers, content, type, isInfoResponse)
+
+    @JvmOverloads
+    suspend fun <T> postMultipart(
+        url: String,
+        headers: Map<String, String>? = null,
+        params: Map<String, Any>? = null,
+        type: Type,
+        isInfoResponse: Boolean = true,
+    ): ResponseHolder<T> = httClient.postMultipart(url, headers, params, type, isInfoResponse)
+
+
+
 }

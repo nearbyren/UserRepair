@@ -83,7 +83,7 @@ class SubmitCardActivity : BaseAppBVMActivity<ActivitySubmitCardBinding, IndexVi
                 toast(it.msg!!)
                 return@observeNonNull
             }
-            toast(it.msg!!)
+            toast("註冊成功")
             navigate(MainActivity::class.java)
             finishPage(SubmitCardActivity@ this)
         }
@@ -122,7 +122,8 @@ class SubmitCardActivity : BaseAppBVMActivity<ActivitySubmitCardBinding, IndexVi
             data?.let {
                 val photoPath = Matisse.obtainPathResult(it)[0]
                 photoPath?.let { photoPath ->
-                    upload(photoPath)
+                    schoolImage = photoPath
+//                    upload(photoPath)
                 }
             }
         }

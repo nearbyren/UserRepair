@@ -23,7 +23,7 @@ class RxRetrofitFactory {
         //普通json
         fun <T> createGson(clazz: Class<T>): T {
             return Retrofit.Builder()
-                .baseUrl("https://xxx")
+                .baseUrl("http://43.129.216.212:8089")
                 // 添加Gson转换器
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

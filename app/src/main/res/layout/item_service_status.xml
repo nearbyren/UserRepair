@@ -16,7 +16,7 @@
             android:layout_width="@dimen/dp_74"
             android:layout_height="@dimen/dp_74"
             android:scaleType="centerCrop"
-            android:src="@drawable/item_img"
+            tools:src="@drawable/item_img"
             app:layout_constraintTop_toBottomOf="@+id/fuwu" />
 
         <View

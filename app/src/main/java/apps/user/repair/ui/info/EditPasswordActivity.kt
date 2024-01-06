@@ -46,11 +46,12 @@ class EditPasswordActivity : BaseAppBVMActivity<ActivityEditPasswordBinding, Ind
                 ToastUtils.showToast("兩次新密碼不一致")
                 return@setOnClickListener
             }
-            viewModel.revisePasswordId(password2, 1)
+            SPreUtil.get(this, "id", "1")
+            viewModel.revisePassword(password2, password2)
         }
         viewModel.editPasswordDto.observeNonNull(this) {
             if (!TextUtils.isEmpty(it.msg)) {
-                toast(it.msg)
+                toast(it.msg!!)
                 return@observeNonNull
             }
             AppManager.getInstance().finishAllActivity()

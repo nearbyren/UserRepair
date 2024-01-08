@@ -1,5 +1,7 @@
 package nearby.lib.netwrok.interceptor
 
+import nearby.lib.base.app.ApplicationProvider
+import nearby.lib.base.uitl.SPreUtil
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.URLEncoder
@@ -45,8 +47,10 @@ class HeadersInterceptor(private val headers: Map<String, String>) : Interceptor
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val requestBuilder = chain.request().newBuilder()
-        requestBuilder.addHeader("sourceType", "1")
-        requestBuilder.addHeader("clientType", "2")
+        val token = SPreUtil[ApplicationProvider.appContext, "token", ""]
+        token?.let { token ->
+            requestBuilder.addHeader("token", token.toString())
+        }
         return chain.proceed(requestBuilder.build())
     }
 }

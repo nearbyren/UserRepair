@@ -9,14 +9,14 @@ import apps.user.repair.databinding.FragmentIndex2Binding
 import apps.user.repair.dialog.RequestStatusDialogFragment
 import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.ServiceDto
-import apps.user.repair.uitl.SPreUtil
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.exts.observeNonNull
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.mvvm.fragment.BaseAppBVMFragment
+import nearby.lib.signal.livebus.LiveBus
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
 import nearby.lib.uikit.widgets.dpToPx
@@ -29,6 +29,7 @@ import nearby.lib.uikit.widgets.dpToPx
  */
 class IndexFragment2 :
     BaseAppBVMFragment<FragmentIndex2Binding, IndexViewModel>() {
+    var requestDialog: RequestStatusDialogFragment? = null
     override fun createViewModel(): IndexViewModel {
         return IndexViewModel()
     }
@@ -44,7 +45,7 @@ class IndexFragment2 :
 
     private fun toNetwork() {
         //請求維修列表
-        val id = SPreUtil[requireActivity(), "id", "1"]
+        val id = SPreUtil[requireActivity(), "id", 1]
         viewModel.inventoryId(id.toString())
     }
 
@@ -62,6 +63,13 @@ class IndexFragment2 :
         }
         initRefresh()
         toNetwork()
+        LiveBus.get("confirm").observe(this) {
+            println("刷新列表")
+            requestDialog?.let { request ->
+                request.dismiss()
+            }
+            toNetwork()
+        }
     }
 
     private fun initRefresh() {
@@ -75,12 +83,15 @@ class IndexFragment2 :
         indexTagAdapter.setOnItemClickListener(listener = object :
             BaseRecyclerAdapter.OnItemClickListener<ServiceDto> {
             override fun onItemClick(holder: Any, item: ServiceDto, position: Int) {
-                val request = RequestStatusDialogFragment()
-                val bundle = Bundle()
-                bundle.putString("numbers", item.numbers)
-                request.arguments = bundle
-                request.setGravity(Gravity.BOTTOM)
-                request.show(this@IndexFragment2)
+                requestDialog = RequestStatusDialogFragment()
+                requestDialog?.let { request->
+                    val bundle = Bundle()
+                    bundle.putString("numbers", item.numbers)
+                    request.arguments = bundle
+                    request.setGravity(Gravity.BOTTOM)
+                    request.show(this@IndexFragment2)
+                }
+
             }
         })
 

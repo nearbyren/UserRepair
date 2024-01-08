@@ -6,11 +6,10 @@ import androidx.core.view.isVisible
 import apps.user.repair.R
 import apps.user.repair.databinding.ActivityEditEmailBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.uitl.SPreUtil
 import nearby.lib.base.bar.BarHelperConfig
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.mvvm.activity.BaseAppBVMActivity
-import nearby.lib.mvvm.activity.BaseAppBindActivity
 
 
 class EditEmailActivity : BaseAppBVMActivity<ActivityEditEmailBinding,IndexViewModel>() {

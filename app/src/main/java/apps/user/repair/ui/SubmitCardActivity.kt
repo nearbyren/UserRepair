@@ -5,15 +5,11 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
-import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import apps.user.repair.R
 import apps.user.repair.databinding.ActivitySubmitCardBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.model.FileDto
 import apps.user.repair.uitl.ConstantUtil
-import apps.user.repair.uitl.FileService
-import apps.user.repair.uitl.RxRetrofitFactory
 import com.app.toast.ToastX
 import com.app.toast.expand.dp
 import com.hjq.permissions.OnPermissionCallback
@@ -25,15 +21,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.internal.entity.CaptureStrategy
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.exts.observeNonNull
-import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.mvvm.activity.BaseAppBVMActivity
-import nearby.lib.mvvm.activity.BaseAppBindActivity
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 
@@ -87,6 +75,15 @@ class SubmitCardActivity : BaseAppBVMActivity<ActivitySubmitCardBinding, IndexVi
             navigate(MainActivity::class.java)
             finishPage(SubmitCardActivity@ this)
         }
+        viewModel.fileSuccess.observeNonNull(this) {
+            if (!TextUtils.isEmpty(it.msg)) {
+                toast(it.msg!!)
+                return@observeNonNull
+            }
+            toast("图片上传成功")
+            schoolImage = it.path
+            Glide.with(this).load(schoolImage).into(binding.cardImg)
+        }
     }
 
     private fun toast(text: String) {
@@ -122,41 +119,14 @@ class SubmitCardActivity : BaseAppBVMActivity<ActivitySubmitCardBinding, IndexVi
             data?.let {
                 val photoPath = Matisse.obtainPathResult(it)[0]
                 photoPath?.let { photoPath ->
-                    schoolImage = photoPath
-//                    upload(photoPath)
+                    upload(photoPath)
                 }
             }
         }
     }
 
     private fun upload(path: String) {
-        val f = File(path)
-        val requestFile =
-            f.asRequestBody("application/otcet-stream".toMediaTypeOrNull())
-        val part = MultipartBody.Part.createFormData(
-            "file",
-            "avatar_${System.currentTimeMillis()}",
-            requestFile
-        )
-        RxRetrofitFactory.createGson(FileService::class.java).upload(part)
-            .enqueue(object : Callback<FileDto?> {
-                override fun onResponse(
-                    call: Call<FileDto?>,
-                    response: Response<FileDto?>
-                ) {
-                    response.body()?.let {
-                        schoolImage = it.data
-                        Glide.with(this@SubmitCardActivity).load(f).into(binding.cardImg)
-                        binding.cardBg.isVisible = false
-
-                    }
-                }
-
-                override fun onFailure(call: Call<FileDto?>, t: Throwable) {
-                    ToastUtils.showToast("上传文件失败")
-                }
-
-            })
+        viewModel.upload(File(path))
     }
 
     private fun goXXPermissions() {

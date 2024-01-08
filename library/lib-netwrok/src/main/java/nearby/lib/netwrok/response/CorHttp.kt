@@ -43,31 +43,31 @@ class CorHttp {
 
     fun init(context: Context) {
         val config = HttpClientConfig.builder()
-                .setBaseUrl("${BASE_URL}/")
+            .setBaseUrl("${BASE_URL}/")
 //                .setCache(Cache(File(context.cacheDir.toString() + "ENSDHttpCache"), 1024L * 1024 * 100))
-                .openLog(true)
-                .setGson(Gson())
-                .setLogger(object : HttpLoggingInterceptor.Logger {
-                    override fun log(message: String) {
-                        if (message.contains("--> END") || message.contains("<-- END")) {
+            .openLog(true)
+            .setGson(Gson())
+            .setLogger(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    if (message.contains("--> END") || message.contains("<-- END")) {
 //                            LogUtil.d(message)
 //                            LogUtil.e(LOG_DIVIDER)
-                            LogUtils.e(LOG_TAG, "||  $message")
-                            LogUtils.e(LOG_TAG, LOG_DIVIDER)
-                        } else if (message.contains("-->") || message.contains("<--")) {
-                            LogUtils.e(LOG_TAG, LOG_DIVIDER)
-                            LogUtils.e(LOG_TAG, "||  $message")
+                        LogUtils.e(LOG_TAG, "||  $message")
+                        LogUtils.e(LOG_TAG, LOG_DIVIDER)
+                    } else if (message.contains("-->") || message.contains("<--")) {
+                        LogUtils.e(LOG_TAG, LOG_DIVIDER)
+                        LogUtils.e(LOG_TAG, "||  $message")
 //                            LogUtil.e(LOG_DIVIDER)
 //                            LogUtil.d(message)
-                        } else {
-                            LogUtils.e(LOG_TAG, "||  $message")
+                    } else {
+                        LogUtils.e(LOG_TAG, "||  $message")
 //                        LogUtil.dJson(message)
-                        }
                     }
-                })
+                }
+            })
 //                .addInterceptor(TokenInterceptor(context))
-                .setHeaders(mapOf(Pair("ensd", "ejiayou")))
-                .build()
+            .setHeaders(mapOf(Pair("ensd", "ejiayou")))
+            .build()
         httClient.init(context, config)
     }
 
@@ -132,7 +132,4 @@ class CorHttp {
         type: Type,
         isInfoResponse: Boolean = true,
     ): ResponseHolder<T> = httClient.postMultipart(url, headers, params, type, isInfoResponse)
-
-
-
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import apps.user.repair.R
 import apps.user.repair.databinding.ActivityLauncherBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.uitl.SPreUtil
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.mvvm.activity.BaseAppBVMActivity
 
 

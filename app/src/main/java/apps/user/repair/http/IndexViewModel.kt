@@ -1,9 +1,10 @@
 package apps.user.repair.http
 
 import androidx.lifecycle.MutableLiveData
+import apps.user.repair.model.ConfirmDto
 import apps.user.repair.model.EditPasswordDto
 import apps.user.repair.model.EnrollDto
-import apps.user.repair.model.FileSuccess
+import apps.user.repair.model.FileSuccessDto
 import apps.user.repair.model.InventoryDto
 import apps.user.repair.model.LoginDto
 import apps.user.repair.model.LogoutDto
@@ -32,6 +33,8 @@ class IndexViewModel : BaseAppViewModel() {
 
     var noteDto = MutableLiveData<NoteDto>()
 
+    var confirmDto = MutableLiveData<ConfirmDto>()
+
     val login = MutableLiveData<LoginDto>()
 
     val enrollDto = MutableLiveData<EnrollDto>()
@@ -44,7 +47,7 @@ class IndexViewModel : BaseAppViewModel() {
 
     val logoutDto = MutableLiveData<LogoutDto>()
 
-    val fileSuccess = MutableLiveData<FileSuccess>()
+    val fileSuccess = MutableLiveData<FileSuccessDto>()
 
     fun numbers(numbers: String) {
         launchOnUI {
@@ -88,7 +91,11 @@ class IndexViewModel : BaseAppViewModel() {
             params["name"] = name
             params["phone"] = phone
             params["describes"] = describes
-            repo.note(params).onSuccess {
+            repo.note(params)
+                .onCompletion {
+                    showLoadingView(false)
+                }
+                .onSuccess {
                 noteDto.value = NoteDto()
             }.onFailure { _, msg ->
                 noteDto.value = msg?.let { NoteDto(it) }
@@ -98,15 +105,26 @@ class IndexViewModel : BaseAppViewModel() {
         }
     }
 
-    fun confirm() {
+    fun confirm(numbers: String, id: Int) {
         launchOnUI {
             showLoadingView(true)
             val params = mutableMapOf<String, Any>()
-            repo.confirm(params).onSuccess {
-
-            }.onFailure { _, _ ->
-            }.onCatch {
-            }
+            params["numbers"] = numbers
+            params["state"] = 2
+            params["id"] = id
+            repo.confirm(params)
+                .onCompletion {
+                    showLoadingView(false)
+                }
+                .onSuccess {
+                    confirmDto.value = ConfirmDto()
+                }.onFailure { _, msg ->
+                    msg?.let { msgs ->
+                        confirmDto.value = ConfirmDto(msg = msgs)
+                    }
+                }.onCatch {
+                    confirmDto.value = ConfirmDto(msg = "服務器異常")
+                }
         }
     }
 
@@ -136,12 +154,15 @@ class IndexViewModel : BaseAppViewModel() {
         }
     }
 
-    fun revisePassword(id: String, password: String) {
+    fun revisePassword(id: String, password: String, newPassword: String) {
         launchOnUI {
             showLoadingView(true)
             val params = mutableMapOf<String, Any>()
             params["id"] = id
+            //原密码
             params["password"] = password
+            //新密码
+            params["newPassword"] = newPassword
             repo.revisePassword(params)
                 .onCompletion { showLoadingView(false) }
                 .onSuccess {
@@ -201,11 +222,11 @@ class IndexViewModel : BaseAppViewModel() {
             repo.upload(params)
                 .onCompletion { showLoadingView(false) }
                 .onSuccess {
-                    fileSuccess.value = FileSuccess( path = it)
+                    fileSuccess.value = FileSuccessDto(path = it)
                 }.onFailure { _, message ->
-                    fileSuccess.value = FileSuccess(msg = message)
+                    fileSuccess.value = FileSuccessDto(msg = message)
                 }.onCatch {
-                    fileSuccess.value = FileSuccess(msg = it.errorMsg)
+                    fileSuccess.value = FileSuccessDto(msg = it.errorMsg)
                 }
         }
     }
@@ -247,7 +268,7 @@ class IndexViewModel : BaseAppViewModel() {
         urgent: Int,
         urgentTime: String?,
         type: Int,
-        tMemberId: String
+        tMemberId: Int
     ) {
         launchOnUI {
             showLoadingView(true)
@@ -261,7 +282,7 @@ class IndexViewModel : BaseAppViewModel() {
                 params["urgentTime"] = urgentTime!!
             }
             params["type"] = type
-            params["tMemberId"] = tMemberId
+            params["tmemberId"] = tMemberId
             repo.submit(params)
                 .onCompletion { showLoadingView(false) }
                 .onSuccess {

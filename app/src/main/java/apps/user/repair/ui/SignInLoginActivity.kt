@@ -11,10 +11,10 @@ import com.app.toast.expand.dp
 import apps.user.repair.R
 import apps.user.repair.databinding.ActivitySignInLoginBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.uitl.SPreUtil
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.exts.observeNonNull
 import nearby.lib.base.uitl.AppManager
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.mvvm.activity.BaseAppBVMActivity
 
 
@@ -59,7 +59,7 @@ class SignInLoginActivity : BaseAppBVMActivity<ActivitySignInLoginBinding, Index
                 toast(it.message!!)
                 return@observeNonNull
             }
-            SPreUtil.put(this@SignInLoginActivity,"id",it.id.toString())
+            SPreUtil.put(this@SignInLoginActivity,"id",it.id)
             SPreUtil.put(this@SignInLoginActivity,"email",it.email.toString())
             SPreUtil.put(this@SignInLoginActivity,"name",it.name.toString())
             SPreUtil.put(this@SignInLoginActivity,"shoolName",it.shoolName.toString())

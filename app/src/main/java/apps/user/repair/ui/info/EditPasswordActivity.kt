@@ -3,18 +3,21 @@ package apps.user.repair.ui.info
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
+import androidx.core.view.isVisible
 import apps.user.repair.R
 import apps.user.repair.databinding.ActivityEditPasswordBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.uitl.SPreUtil
+import apps.user.repair.ui.ActivateActivity
+import apps.user.repair.ui.MainActivity
+import apps.user.repair.ui.SignInLoginActivity
 import com.app.toast.ToastX
 import com.app.toast.expand.dp
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.exts.observeNonNull
 import nearby.lib.base.uitl.AppManager
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.mvvm.activity.BaseAppBVMActivity
-import nearby.lib.mvvm.activity.BaseAppBindActivity
 
 
 class EditPasswordActivity : BaseAppBVMActivity<ActivityEditPasswordBinding, IndexViewModel>() {
@@ -26,7 +29,6 @@ class EditPasswordActivity : BaseAppBVMActivity<ActivityEditPasswordBinding, Ind
 
     override fun initialize(savedInstanceState: Bundle?) {
         binding.button.setOnClickListener {
-            //密碼1
             val password = binding.passwordEt.text.toString()
             val password1 = binding.passwordEt1.text.toString()
             val password2 = binding.passwordEt2.text.toString()
@@ -43,18 +45,31 @@ class EditPasswordActivity : BaseAppBVMActivity<ActivityEditPasswordBinding, Ind
                 return@setOnClickListener
             }
             if (password1 != password2) {
-                ToastUtils.showToast("兩次新密碼不一致")
+                toast("兩次新密碼不一致")
                 return@setOnClickListener
             }
-            SPreUtil.get(this, "id", "1")
-            viewModel.revisePassword(password2, password2)
+            if (password1.length < 6||password2.length < 6) {
+                binding.tipsText.isVisible = true
+                return@setOnClickListener
+            }
+
+            val id = SPreUtil[this, "id", 1]
+            viewModel.revisePassword(id.toString(), password, password2)
         }
         viewModel.editPasswordDto.observeNonNull(this) {
             if (!TextUtils.isEmpty(it.msg)) {
                 toast(it.msg!!)
                 return@observeNonNull
             }
+            toast("修改密码成功")
+            SPreUtil.put(this, "id", 0)
+            SPreUtil.put(this, "email", "")
+            SPreUtil.put(this, "name", "")
+            SPreUtil.put(this, "shoolName", "")
+            SPreUtil.put(this, "token", "")
+            SPreUtil.put(this, "isLogin", false)
             AppManager.getInstance().finishAllActivity()
+            navigate(ActivateActivity::class.java)
         }
     }
 

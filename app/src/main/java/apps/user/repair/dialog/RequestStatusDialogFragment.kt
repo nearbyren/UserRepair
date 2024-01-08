@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -12,40 +11,38 @@ import android.provider.MediaStore
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
+import android.text.TextUtils
 import android.text.style.ClickableSpan
 import android.view.View
-import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentRequestStatusBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.model.AlbumDto
+import apps.user.repair.model.CompleteImageDto
 import apps.user.repair.model.InventoryDto
 import apps.user.repair.uitl.ConstantUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import nearby.lib.base.dialog.BaseBindDialogFragment
 import nearby.lib.base.exts.observeNonNull
-import nearby.lib.base.exts.observeNullable
-import nearby.lib.base.uitl.ToastEvent
+import nearby.lib.base.uitl.SPreUtil
+import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.mvvm.fragment.BaseAppBVMDialogFragment
+import nearby.lib.signal.livebus.LiveBus
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
 import nearby.lib.uikit.widgets.dpToPx
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.io.IOException
 
 
 class RequestStatusDialogFragment :
     BaseAppBVMDialogFragment<FragmentRequestStatusBinding, IndexViewModel>() {
-
-    private var albumDtos = mutableListOf<AlbumDto>()
+    var numbers: String? = null
+    private var albumDtos = mutableListOf<CompleteImageDto>()
     private val itemAlbumAdapter by lazy { apps.user.repair.adapter.ItemShowAlbumAdapter() }
     override fun createViewModel(): IndexViewModel {
         return IndexViewModel()
@@ -63,7 +60,7 @@ class RequestStatusDialogFragment :
 
         }
         arguments?.let { bundle ->
-            val numbers = bundle.getString("numbers")
+            numbers = bundle.getString("numbers")
             println("订单状态 $numbers")
             numbers?.let {
                 viewModel.numbers(it)
@@ -76,14 +73,15 @@ class RequestStatusDialogFragment :
         }
     }
 
-    private fun toUI(it: InventoryDto) {
-        binding.top.address.text = it.repairAddress
-        binding.top.schoolName.text = it.repairAddress
-        binding.top.schoolAddress.text = "描述詳情:  ${it.describes}"
-        binding.top.urgent.text = "${if (it.urgent == 1) "是否緊急: 是" else "是否緊急: 否"}"
-        Glide.with(requireActivity()).load(it.addressImage).into(binding.top.image)
-        println("目前狀態 ${it.state}")
-        when (it.state) {
+    private fun toUI(inventorys: InventoryDto) {
+        binding.top.address.text = inventorys.repairAddress
+        binding.top.schoolName.text = inventorys.repairAddress
+        binding.top.schoolAddress.text = "描述詳情:  ${inventorys.describes}"
+        binding.top.urgent.text =
+            "${if (inventorys.urgent == 1) "是否緊急: 是" else "是否緊急: 否"}"
+        Glide.with(requireActivity()).load(inventorys.addressImage).into(binding.top.image)
+        println("目前狀態 ${inventorys.state}")
+        when (inventorys.state) {
             ConstantUtil.SERVICE_STATUS_QUOTE -> {
                 binding.top.addressStatus.text = "準備報價中"
                 binding.top.addressStatus.setCompoundDrawables(
@@ -124,29 +122,26 @@ class RequestStatusDialogFragment :
                 binding.status23.isVisible = true
                 binding.dowQuote.isVisible = true
                 binding.dowQuote.setOnClickListener {
-
-
-//                        Glide.with(requireActivity()).asBitmap().load("https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1")
-//                            .into(object : CustomTarget<Bitmap?>() {
-//
-//                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
-//                                    saveImageToGallery(requireActivity(),resource)
-//                                }
-//
-//                                override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
-//                            })
-
-                    saveImageToExternalStorage(
-                        requireActivity(),
-                        "https://profile-avatar.csdnimg.cn/e8d347414ee14d94bebc9d07578665ef_m0_37792384.jpg!1",
-                        "image_" + System.currentTimeMillis() + ".jpg"
-                    )
+                    inventorys.quotationImage?.let { url ->
+                        saveImageToExternalStorage(
+                            requireActivity(),
+                            url,
+                            "image_" + System.currentTimeMillis() + ".jpg"
+                        )
+                    }
 
                 }
-
                 binding.confirm.isVisible = true
-                Glide.with(this).load(R.drawable.baojia).into(binding.baojiaimg)
-
+                binding.confirm.setOnClickListener {
+                    val id = SPreUtil[requireActivity(), "id", 1] as Int
+                    numbers?.let { numbers ->
+                        viewModel.confirm(numbers = numbers, id = id)
+                    }
+                }
+                //报价单
+                inventorys.quotationImage?.let { url ->
+                    Glide.with(this).load(url).into(binding.ivQuotationImage)
+                }
             }
 
             ConstantUtil.SERVICE_STATUS_CONFIRM -> {
@@ -161,7 +156,10 @@ class RequestStatusDialogFragment :
                         requireActivity(), R.color.item_status_3
                     )
                 )
-                Glide.with(this).load(R.drawable.baojia).into(binding.baojiaimg)
+                //报价单
+                inventorys.quotationImage?.let { url ->
+                    Glide.with(this).load(url).into(binding.ivQuotationImage)
+                }
                 binding.status23.isVisible = true
                 //隱藏已報價按鈕
                 binding.dowQuote.isVisible = false
@@ -190,37 +188,43 @@ class RequestStatusDialogFragment :
                 binding.status23.isVisible = false
                 binding.dowQuote.isVisible = false
                 binding.confirm.isVisible = false
-
-
                 binding.filled.isVisible = true
 
-
-                Glide.with(this).load(R.drawable.fapiao).into(binding.fapiao)
-
-                albumDtos.add(AlbumDto("水喉渠務", R.drawable.item1))
-                albumDtos.add(AlbumDto("防漏防水", R.drawable.item2))
-                albumDtos.add(AlbumDto("門窗", R.drawable.item3))
-                albumDtos.add(AlbumDto("木工", R.drawable.item4))
-                albumDtos.add(AlbumDto("廢物處理", R.drawable.item1))
-                albumDtos.add(AlbumDto("冷氣", R.drawable.item2))
-                itemAlbumAdapter.setItems(albumDtos)
-                binding.recycle.adapter = itemAlbumAdapter
-                binding.recycle.layoutManager = GridLayoutManager(context, 3)
-                binding.recycle.addItemDecoration(SpaceItemDecoration(0, 10.dpToPx, 10.dpToPx))
-                binding.recycle.setHasFixedSize(true)
-                binding.recycle.itemAnimator = null
-                itemAlbumAdapter.setOnItemClickListener(listener = object :
-                    BaseRecyclerAdapter.OnItemClickListener<AlbumDto> {
-                    override fun onItemClick(holder: Any, item: AlbumDto, position: Int) {
+                //发票
+                inventorys.invoiceImage?.let { url ->
+                    Glide.with(this).load(url).into(binding.fapiao)
+                }
+                //维修完成位置图
+                val completeImages = inventorys.completeImage
+                completeImages?.let {
+                    if (it.size > 0) {
+                        val size = it.size
+                        for (i in 0 until size) {
+                            albumDtos.add(CompleteImageDto(it[i]))
+                        }
                     }
-                })
-
+                    itemAlbumAdapter.setItems(albumDtos)
+                    binding.recycle.adapter = itemAlbumAdapter
+                    binding.recycle.layoutManager = GridLayoutManager(context, 3)
+                    binding.recycle.addItemDecoration(SpaceItemDecoration(0, 10.dpToPx, 10.dpToPx))
+                    binding.recycle.setHasFixedSize(true)
+                    binding.recycle.itemAnimator = null
+                    itemAlbumAdapter.setOnItemClickListener(listener = object :
+                        BaseRecyclerAdapter.OnItemClickListener<CompleteImageDto> {
+                        override fun onItemClick(
+                            holder: Any,
+                            item: CompleteImageDto,
+                            position: Int
+                        ) {
+                        }
+                    })
+                }
             }
 
             else -> {}
         }
 
-        val result = "要求維修日期：${it.urgentTime}"
+        val result = "要求維修日期：${inventorys.urgentTime}"
         val ssb = SpannableStringBuilder(result)
         ssb.setSpan(
             HomeClickSpan(
@@ -232,6 +236,15 @@ class RequestStatusDialogFragment :
         binding.top.date.highlightColor = Color.TRANSPARENT
         binding.top.date.text = ssb
 
+
+        viewModel.confirmDto.observeNonNull(this) {
+            if (!TextUtils.isEmpty(it.msg)) {
+                ToastUtils.showToast(it.msg!!)
+                return@observeNonNull
+            }
+            LiveBus.get("confirm").post("confirm")
+            ToastUtils.showToast("确认成功")
+        }
     }
 
     private fun saveImageToExternalStorage(context: Context, imageUrl: String, fileName: String) {

@@ -13,8 +13,8 @@ import apps.user.repair.ui.info.EditEmailActivity
 import apps.user.repair.ui.info.EditPasswordActivity
 import apps.user.repair.ui.info.PrivacyPolicyActivity
 import apps.user.repair.ui.info.RermsDetailsActivity
-import apps.user.repair.uitl.SPreUtil
 import nearby.lib.base.bar.BarHelperConfig
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.mvvm.fragment.BaseAppBVMFragment
 
 /**

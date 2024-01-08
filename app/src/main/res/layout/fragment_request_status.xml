@@ -88,7 +88,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/baojiadan">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/baojiaimg"
+                            android:id="@+id/iv_quotationImage"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_240"
                             android:layout_marginLeft="@dimen/dp_25"

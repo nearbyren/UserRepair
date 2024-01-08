@@ -12,10 +12,10 @@ import apps.user.repair.http.IndexViewModel
 import apps.user.repair.model.AdBannerDto
 import apps.user.repair.model.IndexItemTagDto
 import apps.user.repair.uitl.ConstantUtil
-import apps.user.repair.uitl.SPreUtil
 import com.youth.banner.indicator.RectangleIndicator
 import nearby.lib.base.bar.BarHelperConfig
 import nearby.lib.base.exts.observeNonNull
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.mvvm.fragment.BaseAppBVMFragment
 import nearby.lib.uikit.recyclerview.BaseRecyclerAdapter
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
@@ -81,10 +81,10 @@ class IndexFragment1 : BaseAppBVMFragment<FragmentIndex1Binding, IndexViewModel>
             Handler().postDelayed({
                 binding.srl.isRefreshing = false
 
-            }, 2000)
+            }, 500)
         }
         //請求維修列表
-        val id = SPreUtil[requireActivity(), "id", "1"]
+        val id = SPreUtil[requireActivity(), "id", 1]
         viewModel.inventoryId(id.toString())
         viewModel.serviceDtos.observeNonNull(this) {
             // 这里可以异步请求数据，刷新完成后调用 refreshLayout.finishRefresh()

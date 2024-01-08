@@ -14,9 +14,9 @@ object ApiHttpUrl {
     //根据用户id查询订单列表
     const val inventory_id = "user/inventory/"
     //确认请求
-    const val confirm = "user/inventory/confirm"
+    const val confirm = "user/confirm"
     //客户中心
-    const val note = "user/note/note"
+    const val note = "user/note"
     //根据用户id查询邮箱
     const val mail_id = "user/mail/"
     //根据用户id修改邮箱
@@ -25,6 +25,4 @@ object ApiHttpUrl {
     const val revisePassword = "user/revisePassword"
     //文件上传
     const val upload = "/files/upload"
-    //图片下载
-    const val files_report = "/files/report/{Image_id}"
 }

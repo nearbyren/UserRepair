@@ -13,12 +13,8 @@ import com.bumptech.glide.Glide
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentRequestBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.model.FileDto
 import apps.user.repair.uitl.ConstantUtil
 import apps.user.repair.uitl.ConstantUtil.ALBUM_REQUEST_CODE
-import apps.user.repair.uitl.FileService
-import apps.user.repair.uitl.RxRetrofitFactory
-import apps.user.repair.uitl.SPreUtil
 import com.app.toast.ToastX
 import com.app.toast.expand.dp
 import com.hjq.permissions.OnPermissionCallback
@@ -29,17 +25,11 @@ import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import com.zhihu.matisse.internal.entity.CaptureStrategy
 import nearby.lib.base.exts.observeNonNull
-import nearby.lib.base.uitl.ToastEvent
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.base.uitl.ToastUtils
 import nearby.lib.mvvm.fragment.BaseAppBVMDialogFragment
 import nearby.lib.uikit.recyclerview.SpaceItemDecoration
 import nearby.lib.uikit.widgets.dpToPx
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.util.Calendar
 
@@ -93,7 +83,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
             override fun onItemClick(obj: Any, position: Int) {
                 repType = ConstantUtil.ALBUM_MULTIPLE
                 Log.e("position", "position---->$position")
-                if (list.size === position && mMaxNumber - list.size > 0) {
+                if (albums.size === position && mMaxNumber - albums.size > 0) {
                     goXXPermissions()
                 } else {
                     //跳转至删除或者预览页面
@@ -112,33 +102,33 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
         }
         //提交上傳
         binding.confirm.setOnClickListener {
+            locationImage.clear()
             //維修地點
-            val address = binding.addressEt.text.toString()
+            address = binding.addressEt.text.toString()
             //維修詳情
-            val detail = binding.detailEt.text.toString()
+            detail = binding.detailEt.text.toString()
             //維修地址圖
             if (TextUtils.isEmpty(addressImage)) {
                 ToastUtils.showToast("請上傳維修地址圖")
                 return@setOnClickListener
             }
             //維修位置圖
-            if (list.size == 0) {
+            if (albums.size == 0) {
                 ToastUtils.showToast("請上傳維修位置圖")
                 return@setOnClickListener
             }
-            var locationImage = StringBuilder()
-            val size = list.size
+            val size = albums.size
             for (i in 0 until size) {
                 val t = size - 1
                 println("我来了 $t ")
-                if (list.size > 1 && i < t) {
-                    locationImage.append("${list[i]},")
+                if (albums.size > 1 && i < t) {
+                    locationImage.append("${albums[i]},")
                 } else {
-                    locationImage.append("${list[i]}")
+                    locationImage.append("${albums[i]}")
                 }
             }
             //是否緊急
-            val urgent = if (binding.clUrgent.isVisible) 1 else 0
+            urgent = if (binding.clUrgent.isVisible) 1 else 0
             if (urgent == 1 && TextUtils.isEmpty(urgentTime)) {
                 ToastUtils.showToast("请选择紧急时间")
                 return@setOnClickListener
@@ -147,17 +137,8 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
             urgentTime?.let { time ->
                 urgentTime = time
             }
-            val id = SPreUtil[requireActivity(), "id", "1"]
-            viewModel.submit(
-                address,
-                detail,
-                addressImage!!,
-                locationImage.toString(),
-                urgent,
-                urgentTime,
-                type,
-                id.toString()
-            )
+            submit()
+
         }
         viewModel.submit.observeNonNull(this) {
             if (!TextUtils.isEmpty(it.msg)) {
@@ -166,6 +147,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
             }
             toast("维修请求成")
             dismiss()
+
         }
 
         viewModel.fileSuccess.observeNonNull(this) {
@@ -173,15 +155,34 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                 toast(it.msg!!)
                 return@observeNonNull
             }
-            toast("上传成功")
+            toast("图片上传成功")
             if (repType == ConstantUtil.ALBUM_LEAFLET) {
                 addressImage = it.path
                 Glide.with(requireActivity()).load(addressImage).into(binding.ivRepLoc1)
             } else {
-                list.add(it.path!!)
-                itemAlbumAdapter.nodfiyData(list)
+                albums.add(it.path!!)
+                itemAlbumAdapter.nodfiyData(albums)
             }
         }
+    }
+
+
+    private fun upload(path: String) {
+        viewModel.upload(File(path))
+    }
+
+    fun submit() {
+        val id = SPreUtil[requireActivity(), "id", 1] as Int
+        viewModel.submit(
+            address!!,
+            detail!!,
+            addressImage!!,
+            locationImage.toString(),
+            urgent,
+            urgentTime,
+            type,
+            id
+        )
     }
 
     private fun toast(text: String) {
@@ -226,7 +227,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                     if (repType == ConstantUtil.ALBUM_LEAFLET) {
                         goAlbum(1)
                     } else {
-                        val size = mMaxNumber - list.size
+                        val size = mMaxNumber - albums.size
                         goAlbum(size)
                     }
                 }
@@ -246,14 +247,26 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
     private val itemAlbumAdapter by lazy {
         apps.user.repair.adapter.ItemAddAlbumAdapter(
             requireActivity(),
-            list,
+            albums,
             mMaxNumber
         )
     }
-    private var list = mutableListOf<String>()
+    private var albums = mutableListOf<String>()
     private var mMaxNumber: Int = 6
     private var addressImage: String? = null
     private var urgentTime: String? = null
+
+    //是否緊急
+    private var urgent: Int = 0
+
+    //維修位置
+    private var locationImage = StringBuilder()
+
+    //維修地點
+    private var address: String? = null
+
+    //維修詳情
+    private var detail: String? = null
     private var type: Int = 8
 
     //1.維修地點照片 2.維修位置照片
@@ -275,7 +288,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                 } else {
                     pp2 = "0${p2 + 1}"
                 }
-                if (p3 < 9) {
+                if (p3 <= 9) {
                     pp3 = "0${p3}"
                 } else {
                     pp3 = p3.toString()
@@ -294,9 +307,9 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
      * @param position
      */
     private fun removeList(position: Int) {
-        if (list.size == 0) return
-        list.removeAt(position)
-        itemAlbumAdapter.nodfiyData(list)
+        if (albums.size == 0) return
+        albums.removeAt(position)
+        itemAlbumAdapter.nodfiyData(albums)
     }
 
     private fun goAlbum(selectable: Int) {
@@ -334,6 +347,7 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
                                 println("图片${(i + 1)} 地址 $path")
                                 upload(path)
                             }
+                            itemAlbumAdapter.nodfiyData(albums)
                         }
 
                         else -> {}
@@ -343,17 +357,4 @@ class RequestDialogFragment : BaseAppBVMDialogFragment<FragmentRequestBinding, I
             }
         }
     }
-
-    private fun upload(path: String) {
-        val f = File(path)
-        val requestFile =
-            f.asRequestBody("application/otcet-stream".toMediaTypeOrNull())
-        val part = MultipartBody.Part.createFormData(
-            "file",
-            "avatar_${System.currentTimeMillis()}",
-            requestFile
-        )
-        viewModel.upload(File(path))
-    }
-
 }

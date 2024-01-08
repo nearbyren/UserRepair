@@ -3,17 +3,14 @@ package apps.user.repair.dialog
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.View
 import apps.user.repair.R
 import apps.user.repair.databinding.FragmentSignOutBinding
 import apps.user.repair.http.IndexViewModel
-import apps.user.repair.uitl.SPreUtil
 import com.app.toast.ToastX
 import com.app.toast.expand.dp
-import nearby.lib.base.dialog.BaseBindDialogFragment
 import nearby.lib.base.exts.observeNonNull
 import nearby.lib.base.uitl.AppManager
-import nearby.lib.base.uitl.ToastEvent
+import nearby.lib.base.uitl.SPreUtil
 import nearby.lib.mvvm.fragment.BaseAppBVMDialogFragment
 
 class SignOutDialogFragment : BaseAppBVMDialogFragment<FragmentSignOutBinding, IndexViewModel>() {

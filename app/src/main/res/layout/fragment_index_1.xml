@@ -3,6 +3,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/theme_bg_color"
@@ -95,7 +96,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/dp_5"
-                                    android:text="學校大門"
+                                    tools:text="學校大門"
+                                    android:textColor="@color/info_22222"
                                     android:textSize="@dimen/sp_16"
                                     android:textStyle="bold"
                                     app:layout_constraintLeft_toRightOf="@+id/view"
@@ -105,7 +107,8 @@
                                     android:id="@+id/address_no"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="編號1100"
+                                    tools:text="編號1100"
+                                    android:textColor="@color/info_22222"
                                     android:textSize="@dimen/sp_12"
                                     app:layout_constraintLeft_toRightOf="@+id/view"
                                     app:layout_constraintTop_toBottomOf="@+id/address" />

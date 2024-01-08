@@ -292,13 +292,13 @@ open class HttpClient : HttpClientBase() {
             ResponseHolder.Success(resp.data)
         } else if (resp.isSuccessful2()) {
             //特殊处理别问为什么 没法说服服务端。
-            ResponseHolder.Success2(resp.code, resp.message, resp.data)
+            ResponseHolder.Success2(resp.code, resp.msg, resp.data)
         } else if (resp.isTokenLapse()) {
             //特殊处理别问为什么 没法说服服务端。
             ResponseHolder.Failure(resp.code, null)
         } else {
             // 请求成功，返回失败响应
-            ResponseHolder.Failure(resp.code, resp.message)
+            ResponseHolder.Failure(resp.code, resp.msg)
         }
     }
 

@@ -7,7 +7,7 @@ package nearby.lib.netwrok.response
 data class InfoResponse<T>(
     val code: Int,
     val status: Int,
-    val message: String,
+    val msg: String,
     val data: T?
 ) {
     /**
